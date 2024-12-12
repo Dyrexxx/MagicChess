@@ -18,21 +18,24 @@ public abstract class ChessFigure extends Figure {
     @Setter
     private static Cell[][] fieldCopy;
 
-    boolean run(int i, int j) {
+    RunType run(int i, int j) {
         if (indexIsArray(i, j)) {
             Cell cell = fieldCopy[i][j];
             Figure figure = cell.getFigure();
-            if (figure instanceof ChessFigure &&
-                    ((ChessFigure) cell.getFigure()).type != type) {
-                ActiveFigures.ATTACK.getCellList().add(cell);
-                return true;
-            }
-            else if (figure instanceof NoFigure) {
+            if (figure instanceof ChessFigure) {
+                if (((ChessFigure) cell.getFigure()).type != type) {
+                    ActiveFigures.ATTACK.getCellList().add(cell);
+                    return RunType.ATTACK;
+                } else {
+                    return RunType.STOP;
+                }
+
+            } else if (figure instanceof NoFigure) {
                 ActiveFigures.MOVE.getCellList().add(cell);
-                return true;
+                return RunType.MOVE;
             }
         }
-        return false;
+        return RunType.STOP;
     }
 
     @Override

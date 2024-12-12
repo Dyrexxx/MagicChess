@@ -19,7 +19,7 @@ public abstract class Pawn extends ChessFigure {
     protected void activate(int i, int j) {
         super.activate(i, j);
         boolean isBlock = false;
-        if (!run(i, j - 1)) {
+        if (run(i, j - 1) == RunType.STOP) {
             isBlock = true;
         }
         if (!beMove && !isBlock) {

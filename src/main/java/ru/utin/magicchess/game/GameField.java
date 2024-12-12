@@ -5,7 +5,9 @@ import javafx.scene.canvas.GraphicsContext;
 import lombok.Getter;
 import ru.utin.magicchess.models.cells.BaseChessCell;
 import ru.utin.magicchess.models.cells.parent.Cell;
+import ru.utin.magicchess.models.figures.chess.black.ElephantBlackFigure;
 import ru.utin.magicchess.models.figures.chess.black.PawnBlackFigure;
+import ru.utin.magicchess.models.figures.chess.white.ElephantWhiteFigure;
 import ru.utin.magicchess.models.figures.chess.white.HorseWhiteFigure;
 import ru.utin.magicchess.models.figures.chess.white.PawnWhiteFigure;
 
@@ -54,6 +56,8 @@ public class GameField {
         field[1][3].setFigure(new PawnBlackFigure());
         field[6][4].setFigure(new PawnWhiteFigure());
         field[7][1].setFigure(new HorseWhiteFigure());
+        field[5][3].setFigure(new ElephantWhiteFigure());
+        field[5][4].setFigure(new ElephantBlackFigure());
     }
 
     public void paint() {
@@ -65,5 +69,4 @@ public class GameField {
             }
         }
     }
-
 }

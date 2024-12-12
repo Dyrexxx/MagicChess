@@ -11,7 +11,6 @@ public abstract class Horse extends ChessFigure {
     protected void activate(int i, int j) {
         super.activate(i, j);
         for (int x = 1, y = 2; x <= 2; x++, y--) {
-            System.out.println(x +" " + y);
             run(i + x, j + y);
             run(i + x, j - y);
             run(i - x, j + y);
