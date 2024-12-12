@@ -19,11 +19,11 @@ public abstract class Pawn extends ChessFigure {
     protected void activate(int i, int j) {
         super.activate(i, j);
         boolean isBlock = false;
-        if (run(i, j - 1) == RunType.STOP) {
+        if (!move(i, j - 1)) {
             isBlock = true;
         }
         if (!beMove && !isBlock) {
-            run(i, j - 2);
+            move(i, j - 2);
         }
         attack(i - 1, j - 1);
         attack(i + 1, j - 1);
@@ -38,5 +38,16 @@ public abstract class Pawn extends ChessFigure {
                 ActiveFigures.ATTACK.getCellList().add(cell);
             }
         }
+    }
+    private boolean move(int i, int j) {
+        if (indexIsArray(i, j)) {
+            Cell cell = getFieldCopy()[i][j];
+            Figure figure = cell.getFigure();
+            if (figure instanceof NoFigure) {
+                ActiveFigures.MOVE.getCellList().add(cell);
+                return true;
+            }
+        }
+        return false;
     }
 }
