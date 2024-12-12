@@ -6,6 +6,7 @@ import lombok.Getter;
 import ru.utin.magicchess.models.cells.BaseChessCell;
 import ru.utin.magicchess.models.cells.parent.Cell;
 import ru.utin.magicchess.models.figures.chess.black.PawnBlackFigure;
+import ru.utin.magicchess.models.figures.chess.white.HorseWhiteFigure;
 import ru.utin.magicchess.models.figures.chess.white.PawnWhiteFigure;
 
 
@@ -50,9 +51,9 @@ public class GameField {
 
     private void createNewGameField() {
         field = BaseChessCell.createChessField((int) canvas.getWidth());
-        field[3][3].setFigure(new PawnBlackFigure());
-        field[3][2].setFigure(new PawnWhiteFigure());
-        field[2][5].setFigure(new PawnWhiteFigure());
+        field[1][3].setFigure(new PawnBlackFigure());
+        field[6][4].setFigure(new PawnWhiteFigure());
+        field[7][1].setFigure(new HorseWhiteFigure());
     }
 
     public void paint() {
@@ -64,4 +65,5 @@ public class GameField {
             }
         }
     }
+
 }

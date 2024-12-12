@@ -6,6 +6,7 @@ import lombok.Setter;
 import ru.utin.magicchess.game.ActiveFigures;
 import ru.utin.magicchess.game.GameField;
 import ru.utin.magicchess.models.cells.parent.Cell;
+import ru.utin.magicchess.models.figures.Figure;
 
 import static ru.utin.magicchess.utils.GameUtil.indexIsArray;
 
@@ -16,44 +17,26 @@ public abstract class Pawn extends ChessFigure {
 
     @Override
     protected void activate(int i, int j) {
-        Cell[][] field = GameField.getInstance().getField();
+        super.activate(i, j);
         boolean isBlock = false;
-
-        if (indexIsArray(i, j - 1)) {
-            Cell cell = field[i][j - 1];
-            if (!(cell.getFigure() instanceof ChessFigure)) {
-                ActiveFigures.MOVE.getCellList().add(cell);
-            } else {
-                isBlock = true;
-            }
+        if (!run(i, j - 1)) {
+            isBlock = true;
         }
         if (!beMove && !isBlock) {
-            if (indexIsArray(i, j - 2)) {
-                Cell cell = field[i][j - 2];
-                if (!(cell.getFigure() instanceof ChessFigure)) {
-                    ActiveFigures.MOVE.getCellList().add(cell);
-                }
-            }
+            run(i, j - 2);
         }
-        if (indexIsArray(i - 1, j - 1)) {
-            Cell cell = field[i - 1][j - 1];
-            if (cell.getFigure() instanceof ChessFigure &&
-                    ((ChessFigure) cell.getFigure()).type != this.type) {
-                ActiveFigures.ATTACK.getCellList().add(cell);
-            }
-        }
-        if (indexIsArray(i + 1, j - 1)) {
-            Cell cell = field[i + 1][j - 1];
-            if (cell.getFigure() instanceof ChessFigure &&
-                    ((ChessFigure) cell.getFigure()).type != this.type) {
-                ActiveFigures.ATTACK.getCellList().add(cell);
-            }
-        }
-
+        attack(i - 1, j - 1);
+        attack(i + 1, j - 1);
     }
 
-    @Override
-    protected void drawImage(GraphicsContext gc, int x, int y, int size) {
-        gc.drawImage(image, x, y, size, size);
+    private void attack(int i, int j) {
+        if (indexIsArray(i, j)) {
+            Cell cell = getFieldCopy()[i][j];
+            Figure figure = cell.getFigure();
+            if (figure instanceof ChessFigure &&
+                    ((ChessFigure) cell.getFigure()).type != type) {
+                ActiveFigures.ATTACK.getCellList().add(cell);
+            }
+        }
     }
 }

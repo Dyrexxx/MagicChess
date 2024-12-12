@@ -42,6 +42,8 @@ public abstract class Figure {
     }
 
     public void resetActiveFigure() {
+        activeColor = Color.TRANSPARENT;
+
         for (Cell cell : ActiveFigures.MOVE.getCellList()) {
             cell.getFigure().setActiveColor(Color.TRANSPARENT);
         }
