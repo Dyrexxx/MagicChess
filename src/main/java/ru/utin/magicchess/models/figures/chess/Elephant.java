@@ -10,16 +10,20 @@ public abstract class Elephant extends ChessFigure {
         RunType rightDown = RunType.NONE;
         for (int x = 1; x <= 8; x++) {
             if (leftUp != RunType.STOP) {
-                leftUp = run(i - x, j - x) == RunType.ATTACK ? RunType.STOP : RunType.NONE;
+                RunType runType = run(i - x, j - x);
+                leftUp = runType == RunType.ATTACK ? RunType.STOP : runType;
             }
             if (rightUp != RunType.STOP) {
-                rightUp = run(i - x, j + x) == RunType.ATTACK ? RunType.STOP : RunType.NONE;
+                RunType runType = run(i - x, j + x);
+                rightUp = runType == RunType.ATTACK ? RunType.STOP : runType;
             }
             if (leftDown != RunType.STOP) {
-                leftDown = run(i + x, j - x) == RunType.ATTACK ? RunType.STOP : RunType.NONE;
+                RunType runType = run(i + x, j - x);
+                leftDown = runType == RunType.ATTACK ? RunType.STOP : runType;
             }
             if (rightDown != RunType.STOP) {
-                rightDown = run(i + x, j + x) == RunType.ATTACK ? RunType.STOP : RunType.NONE;
+                RunType runType = run(i + x, j + x);
+                rightDown = runType == RunType.ATTACK ? RunType.STOP : runType;
             }
         }
     }
