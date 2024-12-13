@@ -6,10 +6,9 @@ import javafx.scene.paint.Color;
 import lombok.Getter;
 import lombok.Setter;
 import ru.utin.magicchess.game.ActiveFigures;
-import ru.utin.magicchess.game.GameField;
+import ru.utin.magicchess.game.BaseGameField;
 import ru.utin.magicchess.models.cells.parent.Cell;
 
-import java.util.List;
 
 @Getter
 public abstract class Figure {
@@ -38,7 +37,7 @@ public abstract class Figure {
         for (Cell cell : ActiveFigures.ATTACK.getCellList()) {
             cell.getFigure().setActiveColor(Color.RED);
         }
-        GameField.getInstance().paint();
+        BaseGameField.getInstance().paint();
     }
 
     public void resetActiveFigure() {
@@ -51,6 +50,6 @@ public abstract class Figure {
             cell.getFigure().setActiveColor(Color.TRANSPARENT);
         }
         ActiveFigures.reset();
-        GameField.getInstance().paint();
+        BaseGameField.getInstance().paint();
     }
 }

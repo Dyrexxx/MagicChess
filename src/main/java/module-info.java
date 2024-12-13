@@ -3,6 +3,7 @@ module ru.utin.magicchess {
     requires javafx.fxml;
     requires static lombok;
     requires java.desktop;
+    requires javafx.media;
 
 
     opens ru.utin.magicchess to javafx.fxml;

@@ -3,7 +3,7 @@ package ru.utin.magicchess.controllers;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.FlowPane;
-import ru.utin.magicchess.game.GameField;
+import ru.utin.magicchess.game.BaseGameField;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -14,8 +14,8 @@ public class SinglePlayerController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        GameField gameField = GameField.getInstance();
-        gameContent.getChildren().add(gameField.getCanvas());
-        gameField.paint();
+        BaseGameField baseGameField = BaseGameField.getInstance();
+        gameContent.getChildren().add(baseGameField.getCanvas());
+        baseGameField.paint();
     }
 }

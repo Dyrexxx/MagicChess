@@ -5,10 +5,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import lombok.Getter;
 import lombok.Setter;
-import ru.utin.magicchess.game.GameField;
+import ru.utin.magicchess.game.BaseGameField;
 import ru.utin.magicchess.models.figures.Figure;
-
-import java.util.List;
 
 @Getter
 public abstract class Cell {
@@ -33,7 +31,7 @@ public abstract class Cell {
     }
 
     public void draw() {
-        Canvas canvas = GameField.getInstance().getCanvas();
+        Canvas canvas = BaseGameField.getInstance().getCanvas();
         draw(canvas.getGraphicsContext2D());
     }
 

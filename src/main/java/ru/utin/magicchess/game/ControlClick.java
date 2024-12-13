@@ -6,10 +6,9 @@ import lombok.ToString;
 import ru.utin.magicchess.models.cells.parent.Cell;
 import ru.utin.magicchess.models.figures.chess.ChessFigure;
 import ru.utin.magicchess.models.figures.chess.NoFigure;
-import ru.utin.magicchess.models.figures.chess.Pawn;
+import ru.utin.magicchess.models.figures.chess.base.Pawn;
 
 @Getter
-@ToString
 public class ControlClick {
     @Setter
     private boolean block = false;

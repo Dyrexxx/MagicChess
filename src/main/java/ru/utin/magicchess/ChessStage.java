@@ -2,6 +2,7 @@ package ru.utin.magicchess;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import lombok.Getter;
 
 
 public class ChessStage {

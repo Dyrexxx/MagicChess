@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<FlowPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:id="rootPane"
+          fx:controller="ru.utin.magicchess.controllers.SettingSingleplayController">
+    <children>
+        <ImageView fx:id="mySpeciesImage" fitWidth="300" fitHeight="300"/>
+    </children>
+    <VBox>
+        <Label fx:id="error" textFill="red"/>
+        <HBox>
+            <Label text="Выберите сторону: "/>
+            <ChoiceBox fx:id="sideBox"/>
+        </HBox>
+        <HBox>
+            <Label text="Базовая игра: "/>
+            <CheckBox fx:id="baseGameCheckBox" onAction="#onBaseGameCheckBox"/>
+        </HBox>
+        <VBox fx:id="speciesPane">
+            <HBox>
+                <Label text="Раса противника: "/>
+                <ChoiceBox fx:id="speciesOpponent"/>
+            </HBox>
+            <HBox>
+                <Label text="Моя раса: "/>
+                <ChoiceBox fx:id="mySpecies"/>
+            </HBox>
+        </VBox>
+        <Button fx:id="start" text="Играть" onAction="#onStart"/>
+    </VBox>
+
+    <children>
+        <ImageView fx:id="opponentSpeciesImage"/>
+    </children>
+
+
+</FlowPane>
