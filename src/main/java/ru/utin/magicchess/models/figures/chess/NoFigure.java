@@ -9,8 +9,9 @@ import java.util.List;
 public class NoFigure extends Figure {
 
 
+
     @Override
-    protected void activate(int i, int j) {
+    protected void activate(int i, int j, Cell[][] field) {
 
     }
 

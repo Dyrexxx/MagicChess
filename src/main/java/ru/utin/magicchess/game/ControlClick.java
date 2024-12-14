@@ -3,6 +3,8 @@ package ru.utin.magicchess.game;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import ru.utin.magicchess.MusicClick;
+import ru.utin.magicchess.TypeRunFigure;
 import ru.utin.magicchess.models.cells.parent.Cell;
 import ru.utin.magicchess.models.figures.chess.ChessFigure;
 import ru.utin.magicchess.models.figures.chess.NoFigure;
@@ -10,10 +12,15 @@ import ru.utin.magicchess.models.figures.chess.base.Pawn;
 
 @Getter
 public class ControlClick {
+    private final Cell[][] field;
     @Setter
     private boolean block = false;
     private Cell lastCell = null;
     private Cell currentCell = null;
+
+    public ControlClick(Cell[][] field) {
+        this.field = field;
+    }
 
     public void click(Cell cell, int i, int j) {
         if (block) {
@@ -22,10 +29,12 @@ public class ControlClick {
                 reset();
             } else if (currentCell.getFigure() instanceof NoFigure) {
                 if (move()) {
+                    MusicClick.getInstance().play(TypeRunFigure.MOVE);
                     reset();
                 }
             } else if (currentCell.getFigure() instanceof ChessFigure) {
                 if (attack()) {
+                    MusicClick.getInstance().play(TypeRunFigure.ATTACK);
                     reset();
                 }
             }
@@ -34,7 +43,7 @@ public class ControlClick {
             if (!(cell.getFigure() instanceof NoFigure)) {
                 block = true;
                 lastCell = cell;
-                lastCell.activateFigure(i, j);
+                lastCell.activateFigure(i, j, field.clone());
             }
         }
     }

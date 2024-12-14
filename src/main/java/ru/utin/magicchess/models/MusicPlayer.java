@@ -11,22 +11,23 @@ import java.io.File;
 @Getter
 public class MusicPlayer {
     private MediaPlayer mediaPlayer;
+    private static final Media music = new Media(new File("E:\\ideaProject\\MagicChess\\src\\main\\resources\\ru\\utin\\magicchess\\music\\menu.mp3").toURI().toString());
 
-    public void play() {
-        Media music = new Media(new File("E:\\ideaProject\\MagicChess\\src\\main\\resources\\ru\\utin\\magicchess\\music\\menu.mp3").toURI().toString());
+    public synchronized void play() {
+
         mediaPlayer = new MediaPlayer(music);
         mediaPlayer.setVolume(0.05);
-        mediaPlayer.setOnEndOfMedia(() -> {
-            dispose();
-            mediaPlayer = null;
-        });
+        mediaPlayer.setOnEndOfMedia(this::dispose);
         mediaPlayer.setOnError(this::dispose);
         mediaPlayer.setOnStopped(this::dispose);
         mediaPlayer.setOnRepeat(this::dispose);
-        mediaPlayer.play();
+
+        new Thread(() -> {
+            mediaPlayer.play();
+        }).start();
     }
 
-    private void dispose() {
+    private synchronized void dispose() {
         mediaPlayer.stop();
         mediaPlayer.dispose();
     }

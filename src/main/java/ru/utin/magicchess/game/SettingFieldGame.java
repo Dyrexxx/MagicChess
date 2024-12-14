@@ -9,20 +9,19 @@ import ru.utin.magicchess.game.factory.TypeFigureModel;
 import ru.utin.magicchess.game.factory.chess_figure.TypeFigureFactory;
 import ru.utin.magicchess.models.cells.parent.Cell;
 import ru.utin.magicchess.models.figures.chess.TypeChessFigure;
-import ru.utin.magicchess.models.figures.chess.base.black.*;
 
 @Getter
 @Setter
 @ToString
-public class SettingGame {
-    private static SettingGame instance;
+public class SettingFieldGame {
+    private static SettingFieldGame instance;
     private TypeColorFigure myColorSide;
     private TypeColorFigure opponentColorSide;
     private TypeFigure typeFigure;
     private TypeChessFigure speciesOpponent;
     private TypeChessFigure mySpecies;
 
-    private SettingGame() {
+    private SettingFieldGame() {
     }
 
     public void fillGameField(Cell[][] field) {
@@ -60,11 +59,11 @@ public class SettingGame {
         field[7][7].setFigure(factory.createFigure(TypeFigureModel.ROOK));
     }
 
-    public static SettingGame getInstance() {
+    public static SettingFieldGame getInstance() {
         if (instance == null) {
-            synchronized (SettingGame.class) {
+            synchronized (SettingFieldGame.class) {
                 if (instance == null) {
-                    instance = new SettingGame();
+                    instance = new SettingFieldGame();
                 }
             }
         }

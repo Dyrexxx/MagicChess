@@ -43,8 +43,8 @@ public abstract class ChessFigure extends Figure {
     }
 
     @Override
-    protected void activate(int i, int j) {
-        fieldCopy = BaseGameField.getInstance().getField().clone();
+    protected void activate(int i, int j, Cell[][] field) {
+        fieldCopy = field;
     }
 
     @Override

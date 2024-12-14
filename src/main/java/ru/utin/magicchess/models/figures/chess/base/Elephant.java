@@ -6,8 +6,8 @@ import ru.utin.magicchess.models.figures.chess.RunType;
 
 public abstract class Elephant extends ChessFigure {
     @Override
-    protected void activate(int i, int j) {
-        super.activate(i, j);
+    protected void activate(int i, int j, Cell[][] field) {
+        super.activate(i, j, field);
         RunType leftUp = RunType.NONE;
         RunType leftDown = RunType.NONE;
         RunType rightUp = RunType.NONE;

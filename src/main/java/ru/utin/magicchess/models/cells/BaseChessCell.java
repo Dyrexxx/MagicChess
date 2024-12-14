@@ -22,21 +22,8 @@ public class BaseChessCell extends Cell {
         figure.draw(gc, x, y, size);
     }
 
-    private static void changeColor() {
+    public static void changeColor() {
         color = color == Color.BLACK ? Color.WHITE : Color.BLACK;
     }
 
-    public static Cell[][] createChessField(int widthCanvas) {
-        Cell[][] chessField = new BaseChessCell[8][8];
-        int cellSize = widthCanvas / 8;
-        for (int i = 0, x = 0; i < 8; i++, x += cellSize) {
-            changeColor();
-            for (int j = 0, y = 0; j < 8; j++, y += cellSize) {
-                chessField[i][j] = new BaseChessCell(x, y, cellSize);
-                changeColor();
-            }
-        }
-        color = Color.BLACK;
-        return chessField;
-    }
 }

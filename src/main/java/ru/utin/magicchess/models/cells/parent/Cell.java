@@ -22,16 +22,15 @@ public abstract class Cell {
         this.size = size;
     }
 
-    public void activateFigure(int i, int j) {
-        figure.activateFigure(i, j);
+    public void activateFigure(int i, int j, Cell[][] field) {
+        figure.activateFigure(i, j, field);
     }
 
     public void resetActivateFigure() {
         figure.resetActiveFigure();
     }
 
-    public void draw() {
-        Canvas canvas = BaseGameField.getInstance().getCanvas();
+    public void draw(Canvas canvas) {
         draw(canvas.getGraphicsContext2D());
     }
 

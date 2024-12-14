@@ -2,7 +2,6 @@ package ru.utin.magicchess.controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -10,7 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import ru.utin.magicchess.ChessStage;
-import ru.utin.magicchess.game.SettingGame;
+import ru.utin.magicchess.game.SettingFieldGame;
 import ru.utin.magicchess.game.factory.TypeColorFigure;
 import ru.utin.magicchess.game.factory.TypeFigure;
 import ru.utin.magicchess.models.figures.chess.TypeChessFigure;
@@ -18,8 +17,6 @@ import ru.utin.magicchess.utils.StageUtil;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import static ru.utin.magicchess.models.figures.chess.TypeChessFigure.BLACK;
 
 public class SettingSingleplayController implements Initializable {
     @FXML
@@ -49,12 +46,12 @@ public class SettingSingleplayController implements Initializable {
                 throw new NullPointerException("Раса не выбрана");
             }
             else {
-                SettingGame settingGame = SettingGame.getInstance();
-                settingGame.setMyColorSide(sideBox.getValue());
-                settingGame.setOpponentColorSide(sideBox.getValue() == TypeColorFigure.BLACK ? TypeColorFigure.WHITE : TypeColorFigure.BLACK);
-                settingGame.setTypeFigure(baseGameCheckBox.isSelected() ? TypeFigure.BASE : TypeFigure.SPECIES);
-                settingGame.setSpeciesOpponent(speciesOpponent.getValue());
-                settingGame.setMySpecies(mySpecies.getValue());
+                SettingFieldGame settingFieldGame = SettingFieldGame.getInstance();
+                settingFieldGame.setMyColorSide(sideBox.getValue());
+                settingFieldGame.setOpponentColorSide(sideBox.getValue() == TypeColorFigure.BLACK ? TypeColorFigure.WHITE : TypeColorFigure.BLACK);
+                settingFieldGame.setTypeFigure(baseGameCheckBox.isSelected() ? TypeFigure.BASE : TypeFigure.SPECIES);
+                settingFieldGame.setSpeciesOpponent(speciesOpponent.getValue());
+                settingFieldGame.setMySpecies(mySpecies.getValue());
                 ChessStage.getInstance().uploadScene(StageUtil.createScene("single_player.fxml"));
             }
         } catch (NullPointerException e) {

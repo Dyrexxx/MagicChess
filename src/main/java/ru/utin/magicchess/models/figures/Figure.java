@@ -17,7 +17,7 @@ public abstract class Figure {
     protected Image image;
 
 
-    protected abstract void activate(int i, int j);
+    protected abstract void activate(int i, int j, Cell[][] field);
 
     protected abstract void drawImage(GraphicsContext gc, int x, int y, int size);
 
@@ -28,16 +28,16 @@ public abstract class Figure {
     }
 
 
-    public void activateFigure(int i, int j) {
+    public void activateFigure(int i, int j, Cell[][] field) {
         activeColor = Color.GREEN;
-        activate(i, j);
+        activate(i, j, field);
+        System.out.println("Активация");
         for (Cell cell : ActiveFigures.MOVE.getCellList()) {
             cell.getFigure().setActiveColor(Color.YELLOW);
         }
         for (Cell cell : ActiveFigures.ATTACK.getCellList()) {
             cell.getFigure().setActiveColor(Color.RED);
         }
-        BaseGameField.getInstance().paint();
     }
 
     public void resetActiveFigure() {
@@ -50,6 +50,5 @@ public abstract class Figure {
             cell.getFigure().setActiveColor(Color.TRANSPARENT);
         }
         ActiveFigures.reset();
-        BaseGameField.getInstance().paint();
     }
 }

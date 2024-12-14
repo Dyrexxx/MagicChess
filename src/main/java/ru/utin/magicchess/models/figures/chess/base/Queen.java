@@ -1,12 +1,13 @@
 package ru.utin.magicchess.models.figures.chess.base;
 
+import ru.utin.magicchess.models.cells.parent.Cell;
 import ru.utin.magicchess.models.figures.chess.ChessFigure;
 import ru.utin.magicchess.models.figures.chess.RunType;
 
 public class Queen extends ChessFigure {
     @Override
-    protected void activate(int i, int j) {
-        super.activate(i, j);
+    protected void activate(int i, int j, Cell[][] fieldCopy) {
+        super.activate(i, j, fieldCopy);
         RunType leftUp = RunType.NONE;
         RunType leftDown = RunType.NONE;
         RunType rightUp = RunType.NONE;

@@ -16,8 +16,8 @@ public abstract class Pawn extends ChessFigure {
     private boolean beMove = false;
 
     @Override
-    protected void activate(int i, int j) {
-        super.activate(i, j);
+    protected void activate(int i, int j, Cell[][] fieldCopy) {
+        super.activate(i, j, fieldCopy);
         boolean isBlock = false;
         if (!move(i, j - 1)) {
             isBlock = true;
