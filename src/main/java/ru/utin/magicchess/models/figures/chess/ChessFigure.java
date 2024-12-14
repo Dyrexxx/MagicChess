@@ -2,20 +2,17 @@ package ru.utin.magicchess.models.figures.chess;
 
 import javafx.scene.canvas.GraphicsContext;
 import lombok.Getter;
-import lombok.Setter;
-import ru.utin.magicchess.game.ActiveFigures;
-import ru.utin.magicchess.game.BaseGameField;
+import ru.utin.magicchess.game.factory.TypeColorFigure;
 import ru.utin.magicchess.models.cells.parent.Cell;
 import ru.utin.magicchess.models.figures.Figure;
 
 import static ru.utin.magicchess.utils.GameUtil.indexIsArray;
 
+@Getter
 public abstract class ChessFigure extends Figure {
-    @Getter
-    protected TypeChessFigure type;
-    @Getter
-    @Setter
-    private static Cell[][] fieldCopy;
+    protected TypeColorFigure type;
+    protected static Cell[][] fieldCopy;
+
 
     protected RunType run(int i, int j) {
         if (indexIsArray(i, j)) {
@@ -23,14 +20,14 @@ public abstract class ChessFigure extends Figure {
             Figure figure = cell.getFigure();
             if (figure instanceof ChessFigure) {
                 if (((ChessFigure) cell.getFigure()).type != type) {
-                    ActiveFigures.ATTACK.getCellList().add(cell);
+                    resultActiveFigureModel.getAttackList().add(cell);
                     return RunType.ATTACK;
                 } else {
                     return RunType.STOP;
                 }
 
             } else if (figure instanceof NoFigure) {
-                ActiveFigures.MOVE.getCellList().add(cell);
+                resultActiveFigureModel.getMoveList().add(cell);
                 return RunType.MOVE;
             }
         }
@@ -43,13 +40,16 @@ public abstract class ChessFigure extends Figure {
     }
 
     @Override
-    protected void activate(int i, int j, Cell[][] field) {
+    protected final void activate(int i, int j, Cell[][] field) {
         fieldCopy = field;
+        activate(i, j);
     }
+
+    protected abstract void activate(int i, int j);
 
     @Override
     public void resetActiveFigure() {
         super.resetActiveFigure();
-        fieldCopy = null;
+
     }
 }

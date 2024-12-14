@@ -16,7 +16,7 @@ public class Game {
             clickOnCanvas((int) event.getX(), (int) event.getY());
         });
         field = new BaseGameField(canvas);
-        controlClick = new ControlClick(field.getField());
+        controlClick = new ControlClick(field.getField(), field.getTurnMove());
     }
 
     private void clickOnCanvas(int x, int y) {

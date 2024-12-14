@@ -23,6 +23,7 @@ public class BaseGameField {
         settingFieldGame.fillGameField(field);
         paint(canvas);
     }
+
     public void paint(Canvas canvas) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -31,6 +32,10 @@ public class BaseGameField {
                 field[i][j].draw(canvas);
             }
         }
+    }
+
+    public TurnMove getTurnMove() {
+        return new TurnMove(settingFieldGame.getMyColorSide(), settingFieldGame.getOpponentColorSide());
     }
 
     private Cell[][] createChessField(int widthCanvas) {

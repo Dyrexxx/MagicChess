@@ -2,9 +2,7 @@ package ru.utin.magicchess.game.factory.chess_figure.base.figure;
 
 import ru.utin.magicchess.game.factory.TypeFigureModel;
 import ru.utin.magicchess.models.figures.Figure;
-import ru.utin.magicchess.models.figures.chess.TypeChessFigure;
-import ru.utin.magicchess.models.figures.chess.base.white.*;
-import ru.utin.magicchess.models.figures.chess.elf.white.*;
+import ru.utin.magicchess.models.figures.chess.chessFigures.base.white.*;
 
 public class WhiteFigureFactory extends AbstractFigureFactory {
 

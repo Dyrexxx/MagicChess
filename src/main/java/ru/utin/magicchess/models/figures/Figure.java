@@ -5,8 +5,8 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import lombok.Getter;
 import lombok.Setter;
-import ru.utin.magicchess.game.ActiveFigures;
 import ru.utin.magicchess.game.BaseGameField;
+import ru.utin.magicchess.models.cells.ResultActiveFigureModel;
 import ru.utin.magicchess.models.cells.parent.Cell;
 
 
@@ -15,6 +15,8 @@ public abstract class Figure {
     @Setter
     protected Color activeColor = Color.TRANSPARENT;
     protected Image image;
+    @Getter
+    protected static final ResultActiveFigureModel resultActiveFigureModel = new ResultActiveFigureModel();
 
 
     protected abstract void activate(int i, int j, Cell[][] field);
@@ -28,27 +30,28 @@ public abstract class Figure {
     }
 
 
-    public void activateFigure(int i, int j, Cell[][] field) {
+    public ResultActiveFigureModel activateFigure(int i, int j, Cell[][] field) {
         activeColor = Color.GREEN;
         activate(i, j, field);
-        System.out.println("Активация");
-        for (Cell cell : ActiveFigures.MOVE.getCellList()) {
+
+        for (Cell cell : resultActiveFigureModel.getMoveList()) {
             cell.getFigure().setActiveColor(Color.YELLOW);
         }
-        for (Cell cell : ActiveFigures.ATTACK.getCellList()) {
+        for (Cell cell : resultActiveFigureModel.getAttackList()) {
             cell.getFigure().setActiveColor(Color.RED);
         }
+        return resultActiveFigureModel;
     }
 
     public void resetActiveFigure() {
         activeColor = Color.TRANSPARENT;
 
-        for (Cell cell : ActiveFigures.MOVE.getCellList()) {
+        for (Cell cell : resultActiveFigureModel.getMoveList()) {
             cell.getFigure().setActiveColor(Color.TRANSPARENT);
         }
-        for (Cell cell : ActiveFigures.ATTACK.getCellList()) {
+        for (Cell cell : resultActiveFigureModel.getAttackList()) {
             cell.getFigure().setActiveColor(Color.TRANSPARENT);
         }
-        ActiveFigures.reset();
+        resultActiveFigureModel.clear();
     }
 }

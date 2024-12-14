@@ -6,6 +6,7 @@ import javafx.scene.canvas.GraphicsContext;
 import lombok.Getter;
 import lombok.Setter;
 import ru.utin.magicchess.game.BaseGameField;
+import ru.utin.magicchess.models.cells.ResultActiveFigureModel;
 import ru.utin.magicchess.models.figures.Figure;
 
 @Getter
@@ -22,8 +23,8 @@ public abstract class Cell {
         this.size = size;
     }
 
-    public void activateFigure(int i, int j, Cell[][] field) {
-        figure.activateFigure(i, j, field);
+    public ResultActiveFigureModel activateFigure(int i, int j, Cell[][] field) {
+        return figure.activateFigure(i, j, field);
     }
 
     public void resetActivateFigure() {

@@ -1,10 +1,9 @@
 package ru.utin.magicchess.game.factory.chess_figure.heroes.elf.factory;
 
 import ru.utin.magicchess.game.factory.TypeFigureModel;
-import ru.utin.magicchess.game.factory.chess_figure.ColorFigureFactory;
 import ru.utin.magicchess.game.factory.chess_figure.base.figure.AbstractFigureFactory;
 import ru.utin.magicchess.models.figures.Figure;
-import ru.utin.magicchess.models.figures.chess.elf.black.*;
+import ru.utin.magicchess.models.figures.chess.chessFigures.elf.black.*;
 
 public class ElfBlackFactory extends AbstractFigureFactory {
     @Override
