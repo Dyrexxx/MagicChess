@@ -1,9 +1,14 @@
 package ru.utin.magicchess.models.figures.chess.abstracts;
 
+import ru.utin.magicchess.game.TypeSide;
 import ru.utin.magicchess.models.figures.chess.ChessFigure;
 import ru.utin.magicchess.models.figures.chess.RunType;
 
 public abstract class Elephant extends ChessFigure {
+    public Elephant(TypeSide typeSide) {
+        super(typeSide);
+    }
+
     @Override
     protected void activate(int i, int j) {
         RunType leftUp = RunType.NONE;

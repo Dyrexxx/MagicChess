@@ -1,16 +1,15 @@
 package ru.utin.magicchess.models.cells;
 
 import lombok.Getter;
-import lombok.Setter;
 import ru.utin.magicchess.models.cells.parent.Cell;
-import ru.utin.magicchess.models.figures.chess.RunType;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 public class ResultActiveFigureModel {
-    private ArrayList<Cell> attackList;
-    private ArrayList<Cell> moveList;
+    private final List<Cell> attackList;
+    private final List<Cell> moveList;
 
     public ResultActiveFigureModel() {
         attackList = new ArrayList<>();
@@ -21,4 +20,5 @@ public class ResultActiveFigureModel {
         moveList.clear();
         attackList.clear();
     }
+
 }

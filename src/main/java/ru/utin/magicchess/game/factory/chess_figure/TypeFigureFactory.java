@@ -1,5 +1,6 @@
 package ru.utin.magicchess.game.factory.chess_figure;
 
+import ru.utin.magicchess.game.TypeSide;
 import ru.utin.magicchess.game.factory.TypeColorFigure;
 import ru.utin.magicchess.game.factory.TypeFigureModel;
 import ru.utin.magicchess.game.factory.chess_figure.base.BaseFigureFactory;
@@ -19,7 +20,7 @@ public class TypeFigureFactory {
         }
     }
 
-    public Figure createFigure(TypeFigureModel model) {
-        return factory.createFigure(model);
+    public Figure createFigure(TypeFigureModel model, TypeSide typeSide) {
+        return factory.createFigure(model, typeSide);
     }
 }

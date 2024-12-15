@@ -32,31 +32,33 @@ public class SettingFieldGame {
     }
 
     private void fillOpponentFigures(Cell[][] field, TypeFigureFactory factory) {
+        TypeSide typeSide = TypeSide.UP;
         for (int i = 0; i < 8; i++) {
-            field[i][1].setFigure(factory.createFigure(TypeFigureModel.PAWN));
+            field[i][1].setFigure(factory.createFigure(TypeFigureModel.PAWN, typeSide));
         }
-        field[0][0].setFigure(factory.createFigure(TypeFigureModel.ROOK));
-        field[1][0].setFigure(factory.createFigure(TypeFigureModel.HORSE));
-        field[2][0].setFigure(factory.createFigure(TypeFigureModel.ELEPHANT));
-        field[3][0].setFigure(factory.createFigure(TypeFigureModel.QUEEN));
-        field[4][0].setFigure(factory.createFigure(TypeFigureModel.KING));
-        field[5][0].setFigure(factory.createFigure(TypeFigureModel.ELEPHANT));
-        field[6][0].setFigure(factory.createFigure(TypeFigureModel.HORSE));
-        field[7][0].setFigure(factory.createFigure(TypeFigureModel.ROOK));
+        field[0][0].setFigure(factory.createFigure(TypeFigureModel.ROOK, typeSide));
+        field[1][0].setFigure(factory.createFigure(TypeFigureModel.HORSE, typeSide));
+        field[2][0].setFigure(factory.createFigure(TypeFigureModel.ELEPHANT, typeSide));
+        field[3][0].setFigure(factory.createFigure(TypeFigureModel.QUEEN, typeSide));
+        field[4][0].setFigure(factory.createFigure(TypeFigureModel.KING, typeSide));
+        field[5][0].setFigure(factory.createFigure(TypeFigureModel.ELEPHANT, typeSide));
+        field[6][0].setFigure(factory.createFigure(TypeFigureModel.HORSE, typeSide));
+        field[7][0].setFigure(factory.createFigure(TypeFigureModel.ROOK, typeSide));
     }
 
     private void fillMyFigures(Cell[][] field, TypeFigureFactory factory) {
+        TypeSide typeSide = TypeSide.DOWN;
         for (int i = 0; i < 8; i++) {
-            field[i][6].setFigure(factory.createFigure(TypeFigureModel.PAWN));
+            field[i][6].setFigure(factory.createFigure(TypeFigureModel.PAWN, typeSide));
         }
-        field[0][7].setFigure(factory.createFigure(TypeFigureModel.ROOK));
-        field[1][7].setFigure(factory.createFigure(TypeFigureModel.HORSE));
-        field[2][7].setFigure(factory.createFigure(TypeFigureModel.ELEPHANT));
-        field[3][7].setFigure(factory.createFigure(TypeFigureModel.QUEEN));
-        field[4][7].setFigure(factory.createFigure(TypeFigureModel.KING));
-        field[5][7].setFigure(factory.createFigure(TypeFigureModel.ELEPHANT));
-        field[6][7].setFigure(factory.createFigure(TypeFigureModel.HORSE));
-        field[7][7].setFigure(factory.createFigure(TypeFigureModel.ROOK));
+        field[0][7].setFigure(factory.createFigure(TypeFigureModel.ROOK, typeSide));
+        field[1][7].setFigure(factory.createFigure(TypeFigureModel.HORSE, typeSide));
+        field[2][7].setFigure(factory.createFigure(TypeFigureModel.ELEPHANT, typeSide));
+        field[3][7].setFigure(factory.createFigure(TypeFigureModel.QUEEN, typeSide));
+        field[4][7].setFigure(factory.createFigure(TypeFigureModel.KING, typeSide));
+        field[5][7].setFigure(factory.createFigure(TypeFigureModel.ELEPHANT, typeSide));
+        field[6][7].setFigure(factory.createFigure(TypeFigureModel.HORSE, typeSide));
+        field[7][7].setFigure(factory.createFigure(TypeFigureModel.ROOK, typeSide));
     }
 
     public static SettingFieldGame getInstance() {

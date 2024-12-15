@@ -1,7 +1,9 @@
 package ru.utin.magicchess;
 
 import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import lombok.Getter;
 
 
@@ -12,8 +14,8 @@ public class ChessStage {
     private ChessStage() {
         stage = new Stage();
         stage.setTitle("Magic Chess");
-        stage.setWidth(1300);
-        stage.setHeight(800);
+        stage.setMaximized(true);
+        stage.setFullScreen(true);
         stage.show();
     }
 

@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Label?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
+            prefWidth="1600"
+            prefHeight="1000"
             fx:controller="ru.utin.magicchess.controllers.SinglePlayerController">
-    <FlowPane fx:id="gameContent"/>
+    <VBox>
+
+
+        <Label fx:id="moved"/>
+        <VBox fx:id="gameContent"/>
+    </VBox>
 </AnchorPane>

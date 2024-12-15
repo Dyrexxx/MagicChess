@@ -1,6 +1,7 @@
 package ru.utin.magicchess.models.figures.chess;
 
 import javafx.scene.canvas.GraphicsContext;
+import ru.utin.magicchess.game.TypeSide;
 import ru.utin.magicchess.models.cells.parent.Cell;
 import ru.utin.magicchess.models.figures.Figure;
 
@@ -9,6 +10,9 @@ import java.util.List;
 public class NoFigure extends Figure {
 
 
+    public NoFigure() {
+        super(null);
+    }
 
     @Override
     protected void activate(int i, int j, Cell[][] field) {

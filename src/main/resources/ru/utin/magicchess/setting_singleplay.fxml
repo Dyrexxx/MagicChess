@@ -10,6 +10,8 @@
 <FlowPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
           fx:id="rootPane"
+          prefWidth="16000"
+          prefHeight="10000"
           fx:controller="ru.utin.magicchess.controllers.SettingSingleplayController">
     <children>
         <ImageView fx:id="mySpeciesImage" fitWidth="300" fitHeight="300"/>

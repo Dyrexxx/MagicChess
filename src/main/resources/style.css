@@ -1,0 +1,20 @@
+#root {
+    -fx-background-color: RED;
+    -fx-background-image: url("ru/utin/magicchess/images/style/fon.jpg");
+   -fx-alignment: center;
+
+}
+
+#btn {
+    -fx-background-image: url("ru/utin/magicchess/images/style/button.jpg");
+    -fx-pref-width: 280;
+    -fx-pref-height: 80;
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-font-size: 30;
+    -fx-text-fill: #b1a2a2;
+    -fx-font-family: "Georgia";
+}
+#btn:hover {
+    -fx-opacity: 0.9;
+}

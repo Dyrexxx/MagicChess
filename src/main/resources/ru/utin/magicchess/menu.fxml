@@ -4,7 +4,15 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import javafx.scene.control.Button?>
-<VBox xmlns:fx="http://javafx.com/fxml"
-      fx:controller="ru.utin.magicchess.controllers.MenuController">
-    <Button text="Одиночная игра" onAction="#onSinglePlayer"/>
-</VBox>
+<?import javafx.stage.Screen?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.FlowPane?>
+<FlowPane xmlns:fx="http://javafx.com/fxml"
+          stylesheets="style.css"
+          id="root"
+          prefWidth="1550"
+          prefHeight="800"
+          fx:controller="ru.utin.magicchess.controllers.MenuController">
+
+    <Button id="btn" text="Одиночная игра" onAction="#onSinglePlayer"/>
+</FlowPane>

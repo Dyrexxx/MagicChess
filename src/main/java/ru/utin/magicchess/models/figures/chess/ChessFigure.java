@@ -2,6 +2,7 @@ package ru.utin.magicchess.models.figures.chess;
 
 import javafx.scene.canvas.GraphicsContext;
 import lombok.Getter;
+import ru.utin.magicchess.game.TypeSide;
 import ru.utin.magicchess.game.factory.TypeColorFigure;
 import ru.utin.magicchess.models.cells.parent.Cell;
 import ru.utin.magicchess.models.figures.Figure;
@@ -12,6 +13,10 @@ import static ru.utin.magicchess.utils.GameUtil.indexIsArray;
 public abstract class ChessFigure extends Figure {
     protected TypeColorFigure type;
     protected static Cell[][] fieldCopy;
+
+    public ChessFigure(TypeSide typeSide) {
+        super(typeSide);
+    }
 
 
     protected RunType run(int i, int j) {

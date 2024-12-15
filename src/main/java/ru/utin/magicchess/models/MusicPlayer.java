@@ -11,7 +11,7 @@ import java.io.File;
 @Getter
 public class MusicPlayer {
     private MediaPlayer mediaPlayer;
-    private static final Media music = new Media(new File("E:\\ideaProject\\MagicChess\\src\\main\\resources\\ru\\utin\\magicchess\\music\\menu.mp3").toURI().toString());
+    private static final Media music = new Media(new File("E:\\ideaProject\\MagicChess\\src\\main\\resources\\ru\\utin\\magicchess\\music\\menu2.mp3").toURI().toString());
 
     public synchronized void play() {
 

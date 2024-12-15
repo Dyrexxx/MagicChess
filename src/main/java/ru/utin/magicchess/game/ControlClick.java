@@ -14,20 +14,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class ControlClick {
-    private final Cell[][] field;
-    private final TurnMove turnMove;
+public class ControlClick implements ObserverField, AnalyzableGameField {
+    private Cell[][] field;
+    private TurnMove turnMove;
     @Setter
     private boolean block = false;
     private Cell lastCell = null;
     private Cell currentCell = null;
 
-    public ControlClick(Cell[][] field, TurnMove turnMove) {
+    public ControlClick(SubjectField baseGameField) {
+        baseGameField.registerObserver(this);
+    }
+
+    @Override
+    public void update(Cell[][] field, TurnMove turnMove) {
         this.field = field;
         this.turnMove = turnMove;
     }
 
-    public void click(Cell cell, int i, int j) {
+    @Override
+    public TypeSide getTypeColorLastCell() {
+        return lastCell.getFigure().getTypeSide();
+    }
+
+    public void click(int i, int j) {
+        Cell cell = field[i][j];
         if (block) {
             currentCell = cell;
             if (lastCell == currentCell) {
@@ -50,8 +61,9 @@ public class ControlClick {
             if (!(cell.getFigure() instanceof NoFigure) && ((ChessFigure) cell.getFigure()).getType() == turnMove.getTurnColor()) {
                 block = true;
                 lastCell = cell;
-                ResultActiveFigureModel activeFigureList = lastCell.activateFigure(i, j, field.clone());
+                ResultActiveFigureModel activeFigureList = lastCell.activateFigure(i, j, field);
                 ActiveFigures.ATTACK.fillList(activeFigureList);
+
             }
         }
     }
@@ -92,6 +104,7 @@ public class ControlClick {
         lastCell = null;
         currentCell = null;
     }
+
 
     @Getter
     private enum ActiveFigures {

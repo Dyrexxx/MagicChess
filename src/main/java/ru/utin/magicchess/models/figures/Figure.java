@@ -5,19 +5,25 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import lombok.Getter;
 import lombok.Setter;
-import ru.utin.magicchess.game.BaseGameField;
+import ru.utin.magicchess.game.TypeSide;
 import ru.utin.magicchess.models.cells.ResultActiveFigureModel;
 import ru.utin.magicchess.models.cells.parent.Cell;
+
+import java.util.List;
 
 
 @Getter
 public abstract class Figure {
+    private final TypeSide typeSide;
     @Setter
     protected Color activeColor = Color.TRANSPARENT;
     protected Image image;
     @Getter
     protected static final ResultActiveFigureModel resultActiveFigureModel = new ResultActiveFigureModel();
 
+    public Figure(TypeSide typeSide) {
+        this.typeSide = typeSide;
+    }
 
     protected abstract void activate(int i, int j, Cell[][] field);
 
@@ -35,11 +41,17 @@ public abstract class Figure {
         activate(i, j, field);
 
         for (Cell cell : resultActiveFigureModel.getMoveList()) {
+
             cell.getFigure().setActiveColor(Color.YELLOW);
         }
         for (Cell cell : resultActiveFigureModel.getAttackList()) {
             cell.getFigure().setActiveColor(Color.RED);
         }
+        return resultActiveFigureModel;
+    }
+
+    public ResultActiveFigureModel getActiveFigure(int i, int j, Cell[][] field) {
+        activate(i, j, field);
         return resultActiveFigureModel;
     }
 
