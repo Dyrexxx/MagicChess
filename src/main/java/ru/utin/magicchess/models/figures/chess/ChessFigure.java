@@ -4,6 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import lombok.Getter;
 import ru.utin.magicchess.game.TypeSide;
 import ru.utin.magicchess.game.factory.TypeColorFigure;
+import ru.utin.magicchess.models.cells.ResultActiveFigureModel;
 import ru.utin.magicchess.models.cells.parent.Cell;
 import ru.utin.magicchess.models.figures.Figure;
 
@@ -12,12 +13,19 @@ import static ru.utin.magicchess.utils.GameUtil.indexIsArray;
 @Getter
 public abstract class ChessFigure extends Figure {
     protected TypeColorFigure type;
+    private final ResultActiveFigureModel activatedModel;
 
 
     public ChessFigure(TypeSide typeSide) {
         super(typeSide);
+        activatedModel = new ResultActiveFigureModel();
     }
 
+    protected ResultActiveFigureModel sendActivatedModel() {
+        ResultActiveFigureModel newActivatedModel = ResultActiveFigureModel.cloneModel(activatedModel);
+        activatedModel.clear();
+        return newActivatedModel;
+    }
 
     protected RunType run(int i, int j, Cell[][] field) {
         if (indexIsArray(i, j)) {
@@ -25,14 +33,14 @@ public abstract class ChessFigure extends Figure {
             Figure figure = cell.getFigure();
             if (figure instanceof ChessFigure) {
                 if (((ChessFigure) cell.getFigure()).type != type) {
-                    resultActiveFigureModel.getAttackList().add(cell);
+                    activatedModel.getAttackList().add(cell);
                     return RunType.ATTACK;
                 } else {
                     return RunType.STOP;
                 }
 
             } else if (figure instanceof NoFigure) {
-                resultActiveFigureModel.getMoveList().add(cell);
+                activatedModel.getMoveList().add(cell);
                 return RunType.MOVE;
             }
         }
@@ -44,16 +52,4 @@ public abstract class ChessFigure extends Figure {
         gc.drawImage(image, x, y, size, size);
     }
 
-    @Override
-    protected void activate(int i, int j, Cell[][] field) {
-        activated(i, j, field);
-    }
-
-    protected abstract void activated(int i, int j, Cell[][] field);
-
-    @Override
-    public void resetActiveFigure() {
-        super.resetActiveFigure();
-
-    }
 }

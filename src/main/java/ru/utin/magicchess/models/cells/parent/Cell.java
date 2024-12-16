@@ -6,6 +6,7 @@ import javafx.scene.canvas.GraphicsContext;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import ru.utin.magicchess.game.Analyze;
 import ru.utin.magicchess.game.BaseGameField;
 import ru.utin.magicchess.models.cells.BaseChessCell;
 import ru.utin.magicchess.models.cells.ResultActiveFigureModel;
@@ -16,7 +17,7 @@ import java.util.Objects;
 
 @ToString
 @Getter
-public abstract class Cell implements Cloneable{
+public abstract class Cell implements Cloneable {
     protected int x;
     protected int y;
     protected int i, j;
@@ -39,11 +40,11 @@ public abstract class Cell implements Cloneable{
     }
 
     public ResultActiveFigureModel activateFigure(int i, int j, Cell[][] field) {
-        return figure.activateFigure(i, j, field);
-    }
-
-    public void resetActivateFigure() {
-        figure.resetActiveFigure();
+        ResultActiveFigureModel model = figure.activateFigure(i, j, field);
+        System.out.println(model);
+        Analyze.getInstance().analyzeMoveIfShah(field, model, field[i][j]);
+        System.out.println(model);
+        return model;
     }
 
     public void draw(Canvas canvas) {

@@ -5,6 +5,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+import ru.utin.magicchess.game.Analyze;
 import ru.utin.magicchess.game.BaseGameField;
 import ru.utin.magicchess.game.Game;
 
@@ -20,6 +21,7 @@ public class SinglePlayerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Game game = new Game();
+        Analyze.getInstance(); //init
         gameContent.getChildren().add(game.getCanvas());
     }
 }

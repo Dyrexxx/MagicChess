@@ -1,5 +1,6 @@
 package ru.utin.magicchess.game;
 
+import javafx.scene.paint.Color;
 import lombok.Getter;
 import lombok.Setter;
 import ru.utin.magicchess.MusicClick;
@@ -8,6 +9,7 @@ import ru.utin.magicchess.models.cells.ResultActiveFigureModel;
 import ru.utin.magicchess.models.cells.parent.Cell;
 import ru.utin.magicchess.models.figures.chess.ChessFigure;
 import ru.utin.magicchess.models.figures.chess.NoFigure;
+import ru.utin.magicchess.models.figures.chess.abstracts.King;
 import ru.utin.magicchess.models.figures.chess.abstracts.Pawn;
 
 import java.util.ArrayList;
@@ -61,11 +63,23 @@ public class ControlClick implements ObserverField, AnalyzableGameField {
             if (!(cell.getFigure() instanceof NoFigure) && ((ChessFigure) cell.getFigure()).getType() == turnMove.getTurnColor()) {
                 block = true;
                 lastCell = cell;
-                ResultActiveFigureModel activeFigureList = lastCell.activateFigure(i, j, field);
+                ResultActiveFigureModel activeFigureList = activatedFigure(i, j);
                 ActiveFigures.ATTACK.fillList(activeFigureList);
-
             }
         }
+    }
+
+    private ResultActiveFigureModel activatedFigure(int i, int j) {
+        ResultActiveFigureModel activatedModel = lastCell.activateFigure(i, j, field);
+
+        field[i][j].getFigure().setActiveColor(Color.GREEN);
+        for (Cell cell : activatedModel.getMoveList()) {
+            cell.getFigure().setActiveColor(Color.YELLOW);
+        }
+        for (Cell cell : activatedModel.getAttackList()) {
+            cell.getFigure().setActiveColor(Color.RED);
+        }
+        return activatedModel;
     }
 
     public boolean attack() {
@@ -98,11 +112,12 @@ public class ControlClick implements ObserverField, AnalyzableGameField {
     }
 
     private void reset() {
-        lastCell.resetActivateFigure();
-        ActiveFigures.reset();
+        ActiveFigures.clearList(lastCell);
+        Analyze.getInstance().analyzeShah(field, lastCell);
         block = false;
         lastCell = null;
         currentCell = null;
+
     }
 
 
@@ -129,7 +144,13 @@ public class ControlClick implements ObserverField, AnalyzableGameField {
             MOVE.getCellList().addAll(activeFigureModel.getMoveList());
         }
 
-        public static void reset() {
+        public static void clearList(Cell lastCell) {
+            lastCell.getFigure().setActiveColor(Color.TRANSPARENT);
+            for (ActiveFigures activeFigures : ActiveFigures.values()) {
+                for (Cell cell : activeFigures.getCellList()) {
+                    cell.getFigure().setActiveColor(Color.TRANSPARENT);
+                }
+            }
             ATTACK.clear();
             MOVE.clear();
         }

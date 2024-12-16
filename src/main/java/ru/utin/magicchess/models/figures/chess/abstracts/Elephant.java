@@ -1,6 +1,7 @@
 package ru.utin.magicchess.models.figures.chess.abstracts;
 
 import ru.utin.magicchess.game.TypeSide;
+import ru.utin.magicchess.models.cells.ResultActiveFigureModel;
 import ru.utin.magicchess.models.cells.parent.Cell;
 import ru.utin.magicchess.models.figures.chess.ChessFigure;
 import ru.utin.magicchess.models.figures.chess.RunType;
@@ -11,7 +12,7 @@ public abstract class Elephant extends ChessFigure {
     }
 
     @Override
-    protected void activated(int i, int j, Cell[][] field) {
+    protected ResultActiveFigureModel activated(int i, int j, Cell[][] field) {
         RunType leftUp = RunType.NONE;
         RunType leftDown = RunType.NONE;
         RunType rightUp = RunType.NONE;
@@ -34,5 +35,6 @@ public abstract class Elephant extends ChessFigure {
                 rightDown = runType == RunType.ATTACK ? RunType.STOP : runType;
             }
         }
+        return super.sendActivatedModel();
     }
 }

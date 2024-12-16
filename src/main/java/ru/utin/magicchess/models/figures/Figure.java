@@ -9,12 +9,12 @@ import ru.utin.magicchess.game.Analyze;
 import ru.utin.magicchess.game.TypeSide;
 import ru.utin.magicchess.models.cells.ResultActiveFigureModel;
 import ru.utin.magicchess.models.cells.parent.Cell;
+import ru.utin.magicchess.models.figures.chess.abstracts.King;
 
 
 @Getter
 public abstract class Figure implements Cloneable {
     private final TypeSide typeSide;
-    protected static final ResultActiveFigureModel resultActiveFigureModel = new ResultActiveFigureModel();
     @Setter
     protected Color activeColor = Color.TRANSPARENT;
     protected Image image;
@@ -23,7 +23,7 @@ public abstract class Figure implements Cloneable {
         this.typeSide = typeSide;
     }
 
-    protected abstract void activate(int i, int j, Cell[][] field);
+    protected abstract ResultActiveFigureModel activated(int i, int j, Cell[][] field);
 
     protected abstract void drawImage(GraphicsContext gc, int x, int y, int size);
 
@@ -35,35 +35,9 @@ public abstract class Figure implements Cloneable {
 
 
     public ResultActiveFigureModel activateFigure(int i, int j, Cell[][] field) {
-        activeColor = Color.GREEN;
-        activate(i, j, field);
-        for (Cell cell : resultActiveFigureModel.getMoveList()) {
-
-            cell.getFigure().setActiveColor(Color.YELLOW);
-        }
-        for (Cell cell : resultActiveFigureModel.getAttackList()) {
-            cell.getFigure().setActiveColor(Color.RED);
-        }
-        return resultActiveFigureModel;
+        return activated(i, j, field);
     }
 
-    public ResultActiveFigureModel getActivatedFigure(int i, int j, Cell[][] field) {
-        resultActiveFigureModel.clear();
-        activate(i, j, field);
-        return resultActiveFigureModel;
-    }
-
-    public void resetActiveFigure() {
-        activeColor = Color.TRANSPARENT;
-
-        for (Cell cell : resultActiveFigureModel.getMoveList()) {
-            cell.getFigure().setActiveColor(Color.TRANSPARENT);
-        }
-        for (Cell cell : resultActiveFigureModel.getAttackList()) {
-            cell.getFigure().setActiveColor(Color.TRANSPARENT);
-        }
-        resultActiveFigureModel.clear();
-    }
 
     @Override
     public Figure clone() {

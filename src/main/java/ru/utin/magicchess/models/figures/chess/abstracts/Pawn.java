@@ -3,6 +3,7 @@ package ru.utin.magicchess.models.figures.chess.abstracts;
 import lombok.Getter;
 import lombok.Setter;
 import ru.utin.magicchess.game.TypeSide;
+import ru.utin.magicchess.models.cells.ResultActiveFigureModel;
 import ru.utin.magicchess.models.cells.parent.Cell;
 import ru.utin.magicchess.models.figures.Figure;
 import ru.utin.magicchess.models.figures.chess.ChessFigure;
@@ -20,7 +21,7 @@ public abstract class Pawn extends ChessFigure {
     }
 
     @Override
-    protected void activated(int i, int j, Cell[][] field) {
+    protected ResultActiveFigureModel activated(int i, int j, Cell[][] field) {
         boolean isBlock = false;
         if (getTypeSide() == TypeSide.DOWN) {
             if (!move(i, j - 1, field)) {
@@ -41,6 +42,7 @@ public abstract class Pawn extends ChessFigure {
             attack(i - 1, j + 1, field);
             attack(i + 1, j + 1, field);
         }
+        return super.sendActivatedModel();
     }
 
 
@@ -50,7 +52,7 @@ public abstract class Pawn extends ChessFigure {
             Figure figure = cell.getFigure();
             if (figure instanceof ChessFigure &&
                     ((ChessFigure) cell.getFigure()).getType() != type) {
-                resultActiveFigureModel.getAttackList().add(cell);
+                super.getActivatedModel().getAttackList().add(cell);
             }
         }
     }
@@ -60,7 +62,7 @@ public abstract class Pawn extends ChessFigure {
             Cell cell = field[i][j];
             Figure figure = cell.getFigure();
             if (figure instanceof NoFigure) {
-                resultActiveFigureModel.getMoveList().add(cell);
+                super.getActivatedModel().getMoveList().add(cell);
                 return true;
             }
         }
