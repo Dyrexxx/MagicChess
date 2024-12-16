@@ -20,33 +20,33 @@ public abstract class Pawn extends ChessFigure {
     }
 
     @Override
-    protected void activate(int i, int j) {
+    protected void activated(int i, int j, Cell[][] field) {
         boolean isBlock = false;
         if (getTypeSide() == TypeSide.DOWN) {
-            if (!move(i, j - 1)) {
+            if (!move(i, j - 1, field)) {
                 isBlock = true;
             }
             if (!beMove && !isBlock) {
-                move(i, j - 2);
+                move(i, j - 2, field);
             }
-            attack(i - 1, j - 1);
-            attack(i + 1, j - 1);
+            attack(i - 1, j - 1, field);
+            attack(i + 1, j - 1, field);
         } else {
-            if (!move(i, j + 1)) {
+            if (!move(i, j + 1, field)) {
                 isBlock = true;
             }
             if (!beMove && !isBlock) {
-                move(i, j + 2);
+                move(i, j + 2, field);
             }
-            attack(i - 1, j + 1);
-            attack(i + 1, j + 1);
+            attack(i - 1, j + 1, field);
+            attack(i + 1, j + 1, field);
         }
     }
 
 
-    private void attack(int i, int j) {
+    private void attack(int i, int j, Cell[][] field) {
         if (indexIsArray(i, j)) {
-            Cell cell = fieldCopy[i][j];
+            Cell cell = field[i][j];
             Figure figure = cell.getFigure();
             if (figure instanceof ChessFigure &&
                     ((ChessFigure) cell.getFigure()).getType() != type) {
@@ -55,9 +55,9 @@ public abstract class Pawn extends ChessFigure {
         }
     }
 
-    private boolean move(int i, int j) {
+    private boolean move(int i, int j, Cell[][] field) {
         if (indexIsArray(i, j)) {
-            Cell cell = fieldCopy[i][j];
+            Cell cell = field[i][j];
             Figure figure = cell.getFigure();
             if (figure instanceof NoFigure) {
                 resultActiveFigureModel.getMoveList().add(cell);

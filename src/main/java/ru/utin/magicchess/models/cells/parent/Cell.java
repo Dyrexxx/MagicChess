@@ -5,6 +5,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import ru.utin.magicchess.game.BaseGameField;
 import ru.utin.magicchess.models.cells.BaseChessCell;
 import ru.utin.magicchess.models.cells.ResultActiveFigureModel;
@@ -13,8 +14,9 @@ import ru.utin.magicchess.models.figures.Figure;
 import java.util.List;
 import java.util.Objects;
 
+@ToString
 @Getter
-public abstract class Cell {
+public abstract class Cell implements Cloneable{
     protected int x;
     protected int y;
     protected int i, j;
@@ -51,14 +53,16 @@ public abstract class Cell {
     protected abstract void draw(GraphicsContext gc);
 
     @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Cell cell = (Cell) o;
-        return x == cell.x && y == cell.y;
-    }
+    public Object clone() {
+        Cell cell = null;
+        try {
+            cell = (Cell) super.clone();
+            Figure f = this.figure.clone();
+            cell.setFigure(f);
+            return cell;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(x, y);
     }
 }

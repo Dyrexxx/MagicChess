@@ -5,21 +5,19 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import lombok.Getter;
 import lombok.Setter;
+import ru.utin.magicchess.game.Analyze;
 import ru.utin.magicchess.game.TypeSide;
 import ru.utin.magicchess.models.cells.ResultActiveFigureModel;
 import ru.utin.magicchess.models.cells.parent.Cell;
 
-import java.util.List;
-
 
 @Getter
-public abstract class Figure {
+public abstract class Figure implements Cloneable {
     private final TypeSide typeSide;
+    protected static final ResultActiveFigureModel resultActiveFigureModel = new ResultActiveFigureModel();
     @Setter
     protected Color activeColor = Color.TRANSPARENT;
     protected Image image;
-    @Getter
-    protected static final ResultActiveFigureModel resultActiveFigureModel = new ResultActiveFigureModel();
 
     public Figure(TypeSide typeSide) {
         this.typeSide = typeSide;
@@ -39,7 +37,6 @@ public abstract class Figure {
     public ResultActiveFigureModel activateFigure(int i, int j, Cell[][] field) {
         activeColor = Color.GREEN;
         activate(i, j, field);
-
         for (Cell cell : resultActiveFigureModel.getMoveList()) {
 
             cell.getFigure().setActiveColor(Color.YELLOW);
@@ -50,7 +47,8 @@ public abstract class Figure {
         return resultActiveFigureModel;
     }
 
-    public ResultActiveFigureModel getActiveFigure(int i, int j, Cell[][] field) {
+    public ResultActiveFigureModel getActivatedFigure(int i, int j, Cell[][] field) {
+        resultActiveFigureModel.clear();
         activate(i, j, field);
         return resultActiveFigureModel;
     }
@@ -65,5 +63,16 @@ public abstract class Figure {
             cell.getFigure().setActiveColor(Color.TRANSPARENT);
         }
         resultActiveFigureModel.clear();
+    }
+
+    @Override
+    public Figure clone() {
+        try {
+            Figure clone = (Figure) super.clone();
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

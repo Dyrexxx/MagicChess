@@ -2,6 +2,8 @@ package ru.utin.magicchess.game;
 
 import ru.utin.magicchess.models.cells.ResultActiveFigureModel;
 import ru.utin.magicchess.models.cells.parent.Cell;
+import ru.utin.magicchess.models.figures.chess.NoFigure;
+import ru.utin.magicchess.models.figures.chess.abstracts.King;
 
 import java.util.*;
 
@@ -13,12 +15,32 @@ public class Analyze {
     private Analyze() {
     }
 
+    public static Analyze getInstance() {
+        synchronized (instance) {
+            return instance;
+        }
+    }
 
-    private List<Cell> analyzeYourMove(Cell[][] fieldCopy, TypeSide typeSideColorLastCell, InsertCellModel cellModel) {
-        List<Cell> cantMoveList = new ArrayList<>();
-        Cell cell = cellModel.cell();
-        ResultActiveFigureModel runList = cell.getFigure().getActiveFigure(cellModel.x(), cellModel.y(), fieldCopy);
-        return null;
+    public List<Cell> analyzeYourMove(Cell[][] field, Cell cell) {
+        Cell[][] fieldCopyForMove = Analyze.copyField(field);
+        List<Cell> attackOpponentList = analyzeAttackOpponent(fieldCopyForMove, cell.getFigure().getTypeSide());
+        for (Cell attack : attackOpponentList) {
+            if (attack.getFigure() instanceof King) {
+                System.out.println("Долбаеб!!!!!");
+            }
+        }
+
+        return attackOpponentList;
+    }
+
+    private static Cell[][] copyField(Cell[][] field) {
+        Cell[][] fieldCopyForMove = new Cell[field.length][field[0].length];
+        for (int i = 0; i < fieldCopyForMove.length; i++) {
+            for (int j = 0; j < fieldCopyForMove[0].length; j++) {
+                fieldCopyForMove[i][j] = (Cell) field[i][j].clone();
+            }
+        }
+        return fieldCopyForMove;
     }
 
     private List<Cell> analyzeAttackOpponent(Cell[][] fieldCopy, TypeSide typeSideColorLastCell) {
@@ -26,8 +48,8 @@ public class Analyze {
         for (int i = 0; i < fieldCopy.length; i++) {
             for (int j = 0; j < fieldCopy[i].length; j++) {
                 Cell cell = fieldCopy[i][j];
-                if (cell.getFigure().getTypeSide() != typeSideColorLastCell) {
-                    addAllUnicalElement(cell.getFigure().getActiveFigure(i, j, fieldCopy).getAttackList(), attackedCells);
+                if (cell.getFigure().getTypeSide() != typeSideColorLastCell && !(cell.getFigure() instanceof NoFigure)) {
+                    addAllUnicalElement(cell.getFigure().getActivatedFigure(i, j, fieldCopy).getAttackList(), attackedCells);
                 }
             }
         }
@@ -39,6 +61,7 @@ public class Analyze {
             if (!unicalElements.contains(cell)) {
                 unicalElements.add(cell);
             }
+
         }
     }
 }

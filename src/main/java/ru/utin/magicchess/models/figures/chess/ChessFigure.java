@@ -12,16 +12,16 @@ import static ru.utin.magicchess.utils.GameUtil.indexIsArray;
 @Getter
 public abstract class ChessFigure extends Figure {
     protected TypeColorFigure type;
-    protected static Cell[][] fieldCopy;
+
 
     public ChessFigure(TypeSide typeSide) {
         super(typeSide);
     }
 
 
-    protected RunType run(int i, int j) {
+    protected RunType run(int i, int j, Cell[][] field) {
         if (indexIsArray(i, j)) {
-            Cell cell = fieldCopy[i][j];
+            Cell cell = field[i][j];
             Figure figure = cell.getFigure();
             if (figure instanceof ChessFigure) {
                 if (((ChessFigure) cell.getFigure()).type != type) {
@@ -45,12 +45,11 @@ public abstract class ChessFigure extends Figure {
     }
 
     @Override
-    protected final void activate(int i, int j, Cell[][] field) {
-        fieldCopy = field;
-        activate(i, j);
+    protected void activate(int i, int j, Cell[][] field) {
+        activated(i, j, field);
     }
 
-    protected abstract void activate(int i, int j);
+    protected abstract void activated(int i, int j, Cell[][] field);
 
     @Override
     public void resetActiveFigure() {
