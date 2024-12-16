@@ -41,9 +41,7 @@ public abstract class Cell implements Cloneable {
 
     public ResultActiveFigureModel activateFigure(int i, int j, Cell[][] field) {
         ResultActiveFigureModel model = figure.activateFigure(i, j, field);
-        System.out.println(model);
         Analyze.getInstance().analyzeMoveIfShah(field, model, field[i][j]);
-        System.out.println(model);
         return model;
     }
 

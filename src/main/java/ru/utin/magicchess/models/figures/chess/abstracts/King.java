@@ -23,8 +23,9 @@ public class King extends ChessFigure {
 
     @Override
     protected void drawImage(GraphicsContext gc, int x, int y, int size) {
-        gc.drawImage(shahImage, x, y, size, size);
         super.drawImage(gc, x, y, size);
+        gc.drawImage(shahImage, x, y, size, size);
+
     }
 
     @Override

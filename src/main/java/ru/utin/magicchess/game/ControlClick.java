@@ -66,12 +66,13 @@ public class ControlClick implements ObserverField, AnalyzableGameField {
                 ResultActiveFigureModel activeFigureList = activatedFigure(i, j);
                 ActiveFigures.ATTACK.fillList(activeFigureList);
             }
+
         }
     }
 
+
     private ResultActiveFigureModel activatedFigure(int i, int j) {
         ResultActiveFigureModel activatedModel = lastCell.activateFigure(i, j, field);
-
         field[i][j].getFigure().setActiveColor(Color.GREEN);
         for (Cell cell : activatedModel.getMoveList()) {
             cell.getFigure().setActiveColor(Color.YELLOW);
@@ -113,11 +114,11 @@ public class ControlClick implements ObserverField, AnalyzableGameField {
 
     private void reset() {
         ActiveFigures.clearList(lastCell);
-        Analyze.getInstance().analyzeShah(field, lastCell);
+        Analyze.getInstance().findShah(field);
+        Analyze.getInstance().findMate(field, currentCell.getFigure().getTypeSide());
         block = false;
         lastCell = null;
         currentCell = null;
-
     }
 
 
