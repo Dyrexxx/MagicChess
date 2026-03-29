@@ -11,7 +11,8 @@ import ru.utin.magicchess.domain.game.MoveKind;
 import ru.utin.magicchess.domain.game.MoveOption;
 import ru.utin.magicchess.domain.game.Piece;
 import ru.utin.magicchess.domain.game.PieceType;
-import ru.utin.magicchess.utils.ResourceUtil;
+import ru.utin.magicchess.ui.resources.PieceSpriteKey;
+import ru.utin.magicchess.ui.resources.SpriteCatalog;
 
 import java.util.Optional;
 
@@ -21,7 +22,7 @@ public class GameBoardRenderer {
     private static final Color SELECTED_OVERLAY = Color.web("#4caf50", 0.45);
     private static final Color MOVE_OVERLAY = Color.web("#ffeb3b", 0.45);
     private static final Color ATTACK_OVERLAY = Color.web("#f44336", 0.45);
-    private static final Image CHECK_IMAGE = new Image(ResourceUtil.resourceUrl("/ru/utin/magicchess/images/chess/shah.png"));
+    private static final Image CHECK_IMAGE = SpriteCatalog.getCheckSprite();
 
     private final Canvas canvas;
 
@@ -80,7 +81,7 @@ public class GameBoardRenderer {
         if (piece == null) {
             return;
         }
-        gc.drawImage(PieceImageResolver.get(piece.species(), piece.color(), piece.type()), x, y, cellSize, cellSize);
+        gc.drawImage(SpriteCatalog.getPieceSprite(new PieceSpriteKey(piece.species(), piece.color(), piece.type())), x, y, cellSize, cellSize);
         if (piece.type() == PieceType.KING && gameSession.isKingInCheck(piece.color())) {
             gc.drawImage(CHECK_IMAGE, x, y, cellSize, cellSize);
         }

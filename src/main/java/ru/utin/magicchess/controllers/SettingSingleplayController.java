@@ -12,7 +12,7 @@ import ru.utin.magicchess.app.GameStarter;
 import ru.utin.magicchess.domain.game.GameSettings;
 import ru.utin.magicchess.domain.game.PieceColor;
 import ru.utin.magicchess.models.figures.chess.TypeChessFigure;
-import ru.utin.magicchess.ui.settings.SpeciesImageResolver;
+import ru.utin.magicchess.ui.resources.SpriteCatalog;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -83,7 +83,7 @@ public class SettingSingleplayController implements Initializable {
     }
 
     private void updateSpeciesPreview() {
-        mySpeciesImage.setImage(SpeciesImageResolver.resolve(mySpecies.getValue()));
-        opponentSpeciesImage.setImage(SpeciesImageResolver.resolve(speciesOpponent.getValue()));
+        mySpeciesImage.setImage(SpriteCatalog.getSpeciesSprite(mySpecies.getValue()));
+        opponentSpeciesImage.setImage(SpriteCatalog.getSpeciesSprite(speciesOpponent.getValue()));
     }
 }
