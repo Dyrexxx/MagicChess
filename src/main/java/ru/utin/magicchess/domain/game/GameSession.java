@@ -1,7 +1,5 @@
 package ru.utin.magicchess.domain.game;
 
-import ru.utin.magicchess.game.factory.TypeColorFigure;
-
 import java.util.List;
 
 public class GameSession {
@@ -10,11 +8,11 @@ public class GameSession {
     private final GameSettings settings;
 
     private Board board;
-    private TypeColorFigure turnColor;
+    private PieceColor turnColor;
     private GameStatus status;
-    private TypeColorFigure winnerColor;
+    private PieceColor winnerColor;
 
-    public GameSession(Board board, TypeColorFigure turnColor, GameSettings settings) {
+    public GameSession(Board board, PieceColor turnColor, GameSettings settings) {
         this.settings = settings;
         this.board = board;
         this.turnColor = turnColor;
@@ -25,14 +23,14 @@ public class GameSession {
     }
 
     public static GameSession create(GameSettings settings) {
-        return new GameSession(BoardFactory.create(settings), TypeColorFigure.WHITE, settings);
+        return new GameSession(BoardFactory.create(settings), PieceColor.WHITE, settings);
     }
 
     public Board board() {
         return board;
     }
 
-    public TypeColorFigure turnColor() {
+    public PieceColor turnColor() {
         return turnColor;
     }
 
@@ -40,7 +38,7 @@ public class GameSession {
         return status;
     }
 
-    public TypeColorFigure winnerColor() {
+    public PieceColor winnerColor() {
         return winnerColor;
     }
 
@@ -75,17 +73,8 @@ public class GameSession {
         return new Move(from, to, movedPiece, capturedPiece, option.kind());
     }
 
-    public boolean isKingInCheck(TypeColorFigure color) {
+    public boolean isKingInCheck(PieceColor color) {
         return checkInspector.isKingInCheck(board, color);
-    }
-
-    public String statusText() {
-        return switch (status) {
-            case ACTIVE -> "Ход: " + turnColor;
-            case CHECK -> "Шах. Ход: " + turnColor;
-            case CHECKMATE -> "Мат. Победил: " + winnerColor;
-            case STALEMATE -> "Пат. Ничья";
-        };
     }
 
     private void recalculateStatus() {
@@ -105,7 +94,7 @@ public class GameSession {
         status = inCheck ? GameStatus.CHECK : GameStatus.ACTIVE;
     }
 
-    private boolean hasAnyLegalMove(TypeColorFigure color) {
+    private boolean hasAnyLegalMove(PieceColor color) {
         for (int column = 0; column < Board.SIZE; column++) {
             for (int row = 0; row < Board.SIZE; row++) {
                 BoardPosition position = new BoardPosition(column, row);
@@ -118,7 +107,7 @@ public class GameSession {
         return false;
     }
 
-    private TypeColorFigure opposite(TypeColorFigure color) {
-        return color == TypeColorFigure.WHITE ? TypeColorFigure.BLACK : TypeColorFigure.WHITE;
+    private PieceColor opposite(PieceColor color) {
+        return color.opposite();
     }
 }

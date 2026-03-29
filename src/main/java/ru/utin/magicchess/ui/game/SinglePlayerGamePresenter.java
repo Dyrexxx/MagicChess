@@ -16,6 +16,7 @@ public class SinglePlayerGamePresenter {
     private final Canvas canvas;
     private final GameBoardRenderer renderer;
     private final GameInteractionService interactionService;
+    private final GameStatusTextFormatter statusTextFormatter;
     private Label statusLabel;
 
     public SinglePlayerGamePresenter(GameSession gameSession, AudioService audioService) {
@@ -25,6 +26,7 @@ public class SinglePlayerGamePresenter {
         SelectionState selectionState = new SelectionState();
         this.renderer = new GameBoardRenderer(canvas);
         this.interactionService = new GameInteractionService(gameSession, selectionState);
+        this.statusTextFormatter = new GameStatusTextFormatter();
         canvas.setOnMouseClicked(event -> onBoardClick(event.getX(), event.getY()));
     }
 
@@ -55,7 +57,7 @@ public class SinglePlayerGamePresenter {
     private void render() {
         renderer.render(gameSession, interactionService.selectionState());
         if (statusLabel != null) {
-            statusLabel.setText(gameSession.statusText());
+            statusLabel.setText(statusTextFormatter.format(gameSession));
         }
     }
 }

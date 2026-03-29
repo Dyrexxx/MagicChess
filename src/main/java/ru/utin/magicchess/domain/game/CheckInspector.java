@@ -1,7 +1,5 @@
 package ru.utin.magicchess.domain.game;
 
-import ru.utin.magicchess.game.factory.TypeColorFigure;
-
 import java.util.List;
 
 public class CheckInspector {
@@ -11,12 +9,12 @@ public class CheckInspector {
         this.legalMoveService = legalMoveService;
     }
 
-    public boolean isKingInCheck(Board board, TypeColorFigure color) {
+    public boolean isKingInCheck(Board board, PieceColor color) {
         BoardPosition kingPosition = board.findKing(color);
         if (kingPosition == null) {
             return false;
         }
-        TypeColorFigure attackerColor = color == TypeColorFigure.WHITE ? TypeColorFigure.BLACK : TypeColorFigure.WHITE;
+        PieceColor attackerColor = color.opposite();
         for (int column = 0; column < Board.SIZE; column++) {
             for (int row = 0; row < Board.SIZE; row++) {
                 BoardPosition position = new BoardPosition(column, row);

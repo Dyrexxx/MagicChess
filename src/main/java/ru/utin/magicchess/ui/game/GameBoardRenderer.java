@@ -11,7 +11,6 @@ import ru.utin.magicchess.domain.game.MoveKind;
 import ru.utin.magicchess.domain.game.MoveOption;
 import ru.utin.magicchess.domain.game.Piece;
 import ru.utin.magicchess.domain.game.PieceType;
-import ru.utin.magicchess.game.factory.chess_figure.FigureImageRegistry;
 import ru.utin.magicchess.utils.ResourceUtil;
 
 import java.util.Optional;
@@ -81,7 +80,7 @@ public class GameBoardRenderer {
         if (piece == null) {
             return;
         }
-        gc.drawImage(FigureImageRegistry.get(piece.species(), piece.color(), piece.type()), x, y, cellSize, cellSize);
+        gc.drawImage(PieceImageResolver.get(piece.species(), piece.color(), piece.type()), x, y, cellSize, cellSize);
         if (piece.type() == PieceType.KING && gameSession.isKingInCheck(piece.color())) {
             gc.drawImage(CHECK_IMAGE, x, y, cellSize, cellSize);
         }

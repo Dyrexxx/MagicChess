@@ -1,8 +1,6 @@
 package ru.utin.magicchess.domain.game;
 
 import org.junit.jupiter.api.Test;
-import ru.utin.magicchess.game.TypeSide;
-import ru.utin.magicchess.game.factory.TypeColorFigure;
 import ru.utin.magicchess.models.figures.chess.TypeChessFigure;
 
 import java.util.List;
@@ -21,7 +19,7 @@ class GameSessionTest {
         assertEquals(PieceType.ROOK, session.board().getPiece(new BoardPosition(0, 7)).type());
         assertEquals(PieceType.KING, session.board().getPiece(new BoardPosition(4, 0)).type());
         assertEquals(PieceType.PAWN, session.board().getPiece(new BoardPosition(3, 6)).type());
-        assertEquals(TypeColorFigure.WHITE, session.turnColor());
+        assertEquals(PieceColor.WHITE, session.turnColor());
         assertEquals(GameStatus.ACTIVE, session.status());
     }
 
@@ -39,50 +37,50 @@ class GameSessionTest {
         assertEquals(MoveKind.MOVE, move.kind());
         assertEquals(PieceType.PAWN, session.board().getPiece(to).type());
         assertTrue(session.board().getPiece(to).moved());
-        assertEquals(TypeColorFigure.BLACK, session.turnColor());
+        assertEquals(PieceColor.BLACK, session.turnColor());
     }
 
     @Test
     void shouldDetectCheckForCurrentPlayer() {
         Board board = new Board();
-        board.setPiece(new BoardPosition(4, 7), piece(PieceType.KING, TypeColorFigure.WHITE, TypeSide.DOWN));
-        board.setPiece(new BoardPosition(4, 0), piece(PieceType.ROOK, TypeColorFigure.BLACK, TypeSide.UP));
-        board.setPiece(new BoardPosition(7, 0), piece(PieceType.KING, TypeColorFigure.BLACK, TypeSide.UP));
+        board.setPiece(new BoardPosition(4, 7), piece(PieceType.KING, PieceColor.WHITE, BoardSide.DOWN));
+        board.setPiece(new BoardPosition(4, 0), piece(PieceType.ROOK, PieceColor.BLACK, BoardSide.UP));
+        board.setPiece(new BoardPosition(7, 0), piece(PieceType.KING, PieceColor.BLACK, BoardSide.UP));
 
-        GameSession session = new GameSession(board, TypeColorFigure.WHITE, GameSettings.defaultSettings());
+        GameSession session = new GameSession(board, PieceColor.WHITE, GameSettings.defaultSettings());
 
         assertEquals(GameStatus.CHECK, session.status());
-        assertTrue(session.isKingInCheck(TypeColorFigure.WHITE));
+        assertTrue(session.isKingInCheck(PieceColor.WHITE));
     }
 
     @Test
     void shouldDetectCheckmate() {
         Board board = new Board();
-        board.setPiece(new BoardPosition(0, 0), piece(PieceType.KING, TypeColorFigure.BLACK, TypeSide.UP));
-        board.setPiece(new BoardPosition(0, 1), piece(PieceType.ROOK, TypeColorFigure.WHITE, TypeSide.DOWN));
-        board.setPiece(new BoardPosition(1, 1), piece(PieceType.QUEEN, TypeColorFigure.WHITE, TypeSide.DOWN));
-        board.setPiece(new BoardPosition(2, 2), piece(PieceType.KING, TypeColorFigure.WHITE, TypeSide.DOWN));
+        board.setPiece(new BoardPosition(0, 0), piece(PieceType.KING, PieceColor.BLACK, BoardSide.UP));
+        board.setPiece(new BoardPosition(0, 1), piece(PieceType.ROOK, PieceColor.WHITE, BoardSide.DOWN));
+        board.setPiece(new BoardPosition(1, 1), piece(PieceType.QUEEN, PieceColor.WHITE, BoardSide.DOWN));
+        board.setPiece(new BoardPosition(2, 2), piece(PieceType.KING, PieceColor.WHITE, BoardSide.DOWN));
 
-        GameSession session = new GameSession(board, TypeColorFigure.BLACK, GameSettings.defaultSettings());
+        GameSession session = new GameSession(board, PieceColor.BLACK, GameSettings.defaultSettings());
 
         assertEquals(GameStatus.CHECKMATE, session.status());
-        assertEquals(TypeColorFigure.WHITE, session.winnerColor());
+        assertEquals(PieceColor.WHITE, session.winnerColor());
     }
 
     @Test
     void shouldDetectStalemate() {
         Board board = new Board();
-        board.setPiece(new BoardPosition(0, 0), piece(PieceType.KING, TypeColorFigure.BLACK, TypeSide.UP));
-        board.setPiece(new BoardPosition(2, 1), piece(PieceType.KING, TypeColorFigure.WHITE, TypeSide.DOWN));
-        board.setPiece(new BoardPosition(1, 2), piece(PieceType.QUEEN, TypeColorFigure.WHITE, TypeSide.DOWN));
+        board.setPiece(new BoardPosition(0, 0), piece(PieceType.KING, PieceColor.BLACK, BoardSide.UP));
+        board.setPiece(new BoardPosition(2, 1), piece(PieceType.KING, PieceColor.WHITE, BoardSide.DOWN));
+        board.setPiece(new BoardPosition(1, 2), piece(PieceType.QUEEN, PieceColor.WHITE, BoardSide.DOWN));
 
-        GameSession session = new GameSession(board, TypeColorFigure.BLACK, GameSettings.defaultSettings());
+        GameSession session = new GameSession(board, PieceColor.BLACK, GameSettings.defaultSettings());
 
         assertEquals(GameStatus.STALEMATE, session.status());
         assertNull(session.winnerColor());
     }
 
-    private Piece piece(PieceType type, TypeColorFigure color, TypeSide side) {
+    private Piece piece(PieceType type, PieceColor color, BoardSide side) {
         return new Piece(type, color, side, TypeChessFigure.CLASSIC, true);
     }
 }

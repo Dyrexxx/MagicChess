@@ -1,12 +1,10 @@
 package ru.utin.magicchess.domain.game;
 
-import ru.utin.magicchess.game.TypeSide;
-import ru.utin.magicchess.game.factory.TypeColorFigure;
 import ru.utin.magicchess.models.figures.chess.TypeChessFigure;
 
 public record GameSettings(
-        TypeColorFigure myColor,
-        TypeColorFigure opponentColor,
+        PieceColor myColor,
+        PieceColor opponentColor,
         TypeChessFigure mySpecies,
         TypeChessFigure opponentSpecies
 ) {
@@ -21,18 +19,18 @@ public record GameSettings(
 
     public static GameSettings defaultSettings() {
         return new GameSettings(
-                TypeColorFigure.WHITE,
-                TypeColorFigure.BLACK,
+                PieceColor.WHITE,
+                PieceColor.BLACK,
                 TypeChessFigure.CLASSIC,
                 TypeChessFigure.CLASSIC
         );
     }
 
-    public TypeColorFigure colorForSide(TypeSide side) {
-        return side == TypeSide.DOWN ? myColor : opponentColor;
+    public PieceColor colorForSide(BoardSide side) {
+        return side == BoardSide.DOWN ? myColor : opponentColor;
     }
 
-    public TypeChessFigure speciesForSide(TypeSide side) {
-        return side == TypeSide.DOWN ? mySpecies : opponentSpecies;
+    public TypeChessFigure speciesForSide(BoardSide side) {
+        return side == BoardSide.DOWN ? mySpecies : opponentSpecies;
     }
 }

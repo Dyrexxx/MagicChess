@@ -1,7 +1,5 @@
 package ru.utin.magicchess.domain.game;
 
-import ru.utin.magicchess.game.TypeSide;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,7 +105,7 @@ public class LegalMoveService {
 
     private List<MoveOption> pawnMoves(Board board, BoardPosition from, Piece piece, boolean attacksOnly) {
         List<MoveOption> moves = new ArrayList<>();
-        int direction = piece.side() == TypeSide.DOWN ? -1 : 1;
+        int direction = piece.side().pawnDirection();
         if (!attacksOnly) {
             BoardPosition oneStep = new BoardPosition(from.column(), from.row() + direction);
             if (oneStep.isInsideBoard() && board.isEmpty(oneStep)) {

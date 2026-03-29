@@ -1,7 +1,5 @@
 package ru.utin.magicchess.domain.game;
 
-import ru.utin.magicchess.game.factory.TypeColorFigure;
-
 public class Board {
     public static final int SIZE = 8;
 
@@ -35,7 +33,7 @@ public class Board {
         return new Board(copy);
     }
 
-    public BoardPosition findKing(TypeColorFigure color) {
+    public BoardPosition findKing(PieceColor color) {
         for (int column = 0; column < SIZE; column++) {
             for (int row = 0; row < SIZE; row++) {
                 Piece piece = pieces[column][row];
