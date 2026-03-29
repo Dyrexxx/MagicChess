@@ -1,43 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.*?>
-<FlowPane xmlns="http://javafx.com/javafx"
-          xmlns:fx="http://javafx.com/fxml"
-          fx:id="rootPane"
-          prefWidth="1600"
-          prefHeight="1000"
-          fx:controller="ru.utin.magicchess.controllers.SettingSingleplayController">
-    <children>
-        <ImageView fx:id="mySpeciesImage" fitWidth="300" fitHeight="300"/>
-    </children>
-    <VBox>
-        <Label fx:id="error" textFill="red"/>
-        <HBox>
-            <Label text="Выберите сторону: "/>
-            <ChoiceBox fx:id="sideBox"/>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            stylesheets="@/style.css"
+            prefWidth="1600"
+            prefHeight="1000"
+            styleClass="screen-root"
+            fx:controller="ru.utin.magicchess.controllers.SettingSingleplayController">
+    <center>
+        <HBox alignment="CENTER" spacing="24">
+            <VBox spacing="16" styleClass="panel-card" maxWidth="460">
+                <padding>
+                    <Insets top="24" right="24" bottom="24" left="24"/>
+                </padding>
+                <Label text="Настройка партии" styleClass="section-title"/>
+                <Label fx:id="error" styleClass="error-text"/>
+                <HBox spacing="12" alignment="CENTER_LEFT">
+                    <Label text="Моя сторона" styleClass="field-label"/>
+                    <ChoiceBox fx:id="sideBox" prefWidth="180"/>
+                </HBox>
+                <HBox spacing="12" alignment="CENTER_LEFT">
+                    <Label text="Базовая игра" styleClass="field-label"/>
+                    <CheckBox fx:id="baseGameCheckBox" onAction="#onBaseGameCheckBox"/>
+                </HBox>
+                <VBox fx:id="speciesPane" spacing="12">
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <Label text="Моя раса" styleClass="field-label"/>
+                        <ChoiceBox fx:id="mySpecies" prefWidth="180"/>
+                    </HBox>
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <Label text="Раса противника" styleClass="field-label"/>
+                        <ChoiceBox fx:id="speciesOpponent" prefWidth="180"/>
+                    </HBox>
+                </VBox>
+                <Region prefHeight="8"/>
+                <Button text="Играть" onAction="#onStart" styleClass="primary-button"/>
+            </VBox>
+            <VBox spacing="16" styleClass="panel-card" alignment="CENTER">
+                <padding>
+                    <Insets top="24" right="24" bottom="24" left="24"/>
+                </padding>
+                <Label text="Превью рас" styleClass="section-title"/>
+                <HBox spacing="24" alignment="CENTER">
+                    <VBox spacing="8" alignment="CENTER">
+                        <Label text="Моя сторона" styleClass="field-label"/>
+                        <ImageView fx:id="mySpeciesImage" fitWidth="220" fitHeight="220" preserveRatio="true"/>
+                    </VBox>
+                    <VBox spacing="8" alignment="CENTER">
+                        <Label text="Противник" styleClass="field-label"/>
+                        <ImageView fx:id="opponentSpeciesImage" fitWidth="220" fitHeight="220" preserveRatio="true"/>
+                    </VBox>
+                </HBox>
+            </VBox>
         </HBox>
-        <HBox>
-            <Label text="Базовая игра: "/>
-            <CheckBox fx:id="baseGameCheckBox" onAction="#onBaseGameCheckBox"/>
-        </HBox>
-        <VBox fx:id="speciesPane">
-            <HBox>
-                <Label text="Раса противника: "/>
-                <ChoiceBox fx:id="speciesOpponent"/>
-            </HBox>
-            <HBox>
-                <Label text="Моя раса: "/>
-                <ChoiceBox fx:id="mySpecies"/>
-            </HBox>
-        </VBox>
-        <Button fx:id="start" text="Играть" onAction="#onStart"/>
-    </VBox>
-
-    <children>
-        <ImageView fx:id="opponentSpeciesImage"/>
-    </children>
-
-
-</FlowPane>
+    </center>
+</BorderPane>

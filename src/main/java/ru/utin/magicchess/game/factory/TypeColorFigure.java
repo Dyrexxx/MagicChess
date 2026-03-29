@@ -1,10 +1,5 @@
 package ru.utin.magicchess.game.factory;
 
-import lombok.Getter;
-import lombok.ToString;
-
-@Getter
-@ToString
 public enum TypeColorFigure {
     BLACK("Черный"),
     WHITE("Белый");
@@ -12,5 +7,14 @@ public enum TypeColorFigure {
 
     TypeColorFigure(String title) {
         this.title = title;
+    }
+
+    @Override
+    public String toString() {
+        return title;
+    }
+
+    public String getTitle() {
+        return title;
     }
 }

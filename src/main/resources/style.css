@@ -1,21 +1,60 @@
-#root {
-    -fx-background-color: RED;
+.screen-root {
+    -fx-background-color: linear-gradient(to bottom, #24160d, #120c08);
     -fx-background-image: url("ru/utin/magicchess/images/style/fon.jpg");
-    -fx-alignment: center;
-
-}
-
-#btn {
-    -fx-background-image: url("ru/utin/magicchess/images/style/button.jpg");
-    -fx-pref-width: 280;
-    -fx-pref-height: 80;
-    -fx-background-size: contain;
-    -fx-background-repeat: no-repeat;
-    -fx-font-size: 30;
-    -fx-text-fill: #b1a2a2;
+    -fx-background-size: cover;
     -fx-font-family: "Georgia";
 }
 
-#btn:hover {
-    -fx-opacity: 0.9;
+.screen-menu {
+    -fx-padding: 48;
+}
+
+.panel-card {
+    -fx-background-color: rgba(18, 12, 8, 0.82);
+    -fx-background-radius: 16;
+    -fx-border-color: rgba(243, 217, 177, 0.35);
+    -fx-border-radius: 16;
+}
+
+.screen-title {
+    -fx-font-size: 42;
+    -fx-text-fill: #f3d9b1;
+}
+
+.section-title {
+    -fx-font-size: 26;
+    -fx-text-fill: #f3d9b1;
+}
+
+.field-label {
+    -fx-text-fill: #f6eee5;
+    -fx-font-size: 16;
+}
+
+.status-text {
+    -fx-text-fill: #f6eee5;
+    -fx-font-size: 18;
+}
+
+.error-text {
+    -fx-text-fill: #ff8e8e;
+    -fx-font-size: 15;
+}
+
+.primary-button {
+    -fx-background-color: #7b4f31;
+    -fx-text-fill: #f6eee5;
+    -fx-font-size: 20;
+    -fx-background-radius: 10;
+    -fx-padding: 12 28;
+    -fx-cursor: hand;
+}
+
+.primary-button:hover {
+    -fx-background-color: #95613d;
+}
+
+.choice-box,
+.check-box {
+    -fx-text-fill: #f6eee5;
 }

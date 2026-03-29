@@ -1,5 +1,6 @@
 package ru.utin.magicchess.controllers;
 
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
@@ -7,20 +8,17 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
-import ru.utin.magicchess.ChessStage;
-import ru.utin.magicchess.game.SettingFieldGame;
+import ru.utin.magicchess.app.GameStarter;
+import ru.utin.magicchess.domain.game.GameSettings;
 import ru.utin.magicchess.game.factory.TypeColorFigure;
 import ru.utin.magicchess.models.figures.chess.TypeChessFigure;
 import ru.utin.magicchess.utils.ResourceUtil;
-import ru.utin.magicchess.utils.StageUtil;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class SettingSingleplayController implements Initializable {
-    @FXML private FlowPane rootPane;
     @FXML private VBox speciesPane;
     @FXML private ChoiceBox<TypeColorFigure> sideBox;
     @FXML private CheckBox baseGameCheckBox;
@@ -29,55 +27,71 @@ public class SettingSingleplayController implements Initializable {
     @FXML private ImageView mySpeciesImage;
     @FXML private ImageView opponentSpeciesImage;
     @FXML private Label error;
+    private final GameStarter gameStarter;
+
+    public SettingSingleplayController(GameStarter gameStarter) {
+        this.gameStarter = gameStarter;
+    }
 
     @FXML
     private void onStart() {
-        if (!baseGameCheckBox.isSelected() &&
-                (speciesOpponent.getValue() == TypeChessFigure.NONE || mySpecies.getValue() == TypeChessFigure.NONE)) {
+        TypeColorFigure myColor = sideBox.getValue();
+        if (myColor == null) {
+            error.setText("Сторона не выбрана");
+            return;
+        }
+
+        TypeChessFigure mySelectedSpecies = baseGameCheckBox.isSelected() ? TypeChessFigure.CLASSIC : mySpecies.getValue();
+        TypeChessFigure opponentSelectedSpecies = baseGameCheckBox.isSelected() ? TypeChessFigure.CLASSIC : speciesOpponent.getValue();
+        if (mySelectedSpecies == null || opponentSelectedSpecies == null
+                || mySelectedSpecies == TypeChessFigure.NONE || opponentSelectedSpecies == TypeChessFigure.NONE) {
             error.setText("Раса не выбрана");
             return;
         }
 
-        SettingFieldGame settings = SettingFieldGame.getInstance();
-        TypeColorFigure myColor = sideBox.getValue();
+        error.setText("");
         TypeColorFigure opponentColor = myColor == TypeColorFigure.BLACK ? TypeColorFigure.WHITE : TypeColorFigure.BLACK;
-
-        settings.setMyColorSide(myColor);
-        settings.setOpponentColorSide(opponentColor);
-
-        if (baseGameCheckBox.isSelected()) {
-            settings.setMySpecies(TypeChessFigure.CLASSIC);
-            settings.setOpponentSpecies(TypeChessFigure.CLASSIC);
-        } else {
-            settings.setMySpecies(mySpecies.getValue());
-            settings.setOpponentSpecies(speciesOpponent.getValue());
-        }
-
-        ChessStage.getInstance().uploadScene(StageUtil.createScene("single_player.fxml"));
+        gameStarter.startSinglePlayer(new GameSettings(myColor, opponentColor, mySelectedSpecies, opponentSelectedSpecies));
     }
 
     @FXML
     private void onBaseGameCheckBox() {
-        if (baseGameCheckBox.isSelected()) {
-            speciesPane.setVisible(false);
-            speciesOpponent.setValue(TypeChessFigure.NONE);
-            mySpecies.setValue(TypeChessFigure.NONE);
+        boolean baseGame = baseGameCheckBox.isSelected();
+        speciesPane.setVisible(!baseGame);
+        speciesPane.setManaged(!baseGame);
+        if (baseGame) {
+            mySpecies.setValue(TypeChessFigure.CLASSIC);
+            speciesOpponent.setValue(TypeChessFigure.CLASSIC);
         } else {
-            speciesPane.setVisible(true);
+            mySpecies.setValue(TypeChessFigure.NONE);
+            speciesOpponent.setValue(TypeChessFigure.NONE);
         }
+        updateSpeciesPreview();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        mySpeciesImage.setImage(new Image(ResourceUtil.resourceUrl("/ru/utin/magicchess/images/species/elf.jpg")));
-
-        sideBox.getItems().addAll(TypeColorFigure.WHITE, TypeColorFigure.BLACK);
+        sideBox.setItems(FXCollections.observableArrayList(TypeColorFigure.values()));
         sideBox.setValue(TypeColorFigure.WHITE);
-
-        speciesOpponent.getItems().add(TypeChessFigure.ELF);
-        speciesOpponent.setValue(TypeChessFigure.NONE);
-
-        mySpecies.getItems().add(TypeChessFigure.ELF);
+        mySpecies.setItems(FXCollections.observableArrayList(TypeChessFigure.NONE, TypeChessFigure.CLASSIC, TypeChessFigure.ELF));
+        speciesOpponent.setItems(FXCollections.observableArrayList(TypeChessFigure.NONE, TypeChessFigure.CLASSIC, TypeChessFigure.ELF));
         mySpecies.setValue(TypeChessFigure.NONE);
+        speciesOpponent.setValue(TypeChessFigure.NONE);
+        mySpecies.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newValue) -> updateSpeciesPreview());
+        speciesOpponent.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newValue) -> updateSpeciesPreview());
+        baseGameCheckBox.setSelected(false);
+        onBaseGameCheckBox();
+    }
+
+    private void updateSpeciesPreview() {
+        mySpeciesImage.setImage(resolveSpeciesImage(mySpecies.getValue()));
+        opponentSpeciesImage.setImage(resolveSpeciesImage(speciesOpponent.getValue()));
+    }
+
+    private Image resolveSpeciesImage(TypeChessFigure species) {
+        if (species != TypeChessFigure.ELF) {
+            return null;
+        }
+        return new Image(ResourceUtil.resourceUrl("/ru/utin/magicchess/images/species/elf.jpg"));
     }
 }

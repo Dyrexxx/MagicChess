@@ -1,6 +1,7 @@
 package ru.utin.magicchess.game.factory.chess_figure;
 
 import javafx.scene.image.Image;
+import ru.utin.magicchess.domain.game.PieceType;
 import ru.utin.magicchess.game.factory.TypeColorFigure;
 import ru.utin.magicchess.game.factory.TypeFigureModel;
 import ru.utin.magicchess.models.figures.chess.TypeChessFigure;
@@ -72,6 +73,10 @@ public final class FigureImageRegistry {
         return image;
     }
 
+    public static Image get(TypeChessFigure species, TypeColorFigure color, PieceType pieceType) {
+        return get(species, color, toFigureModel(pieceType));
+    }
+
     /**
      * Регистрирует изображение для конкретной комбинации раса + цвет + тип.
      * Используется для добавления или переопределения изображений новых рас.
@@ -85,5 +90,16 @@ public final class FigureImageRegistry {
 
     private static Image load(String path) {
         return new Image(ResourceUtil.resourceUrl(path));
+    }
+
+    private static TypeFigureModel toFigureModel(PieceType pieceType) {
+        return switch (pieceType) {
+            case KING -> TypeFigureModel.KING;
+            case QUEEN -> TypeFigureModel.QUEEN;
+            case ROOK -> TypeFigureModel.ROOK;
+            case BISHOP -> TypeFigureModel.ELEPHANT;
+            case KNIGHT -> TypeFigureModel.HORSE;
+            case PAWN -> TypeFigureModel.PAWN;
+        };
     }
 }

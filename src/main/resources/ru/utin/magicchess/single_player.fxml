@@ -1,17 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
-<AnchorPane xmlns="http://javafx.com/javafx"
+<BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
+            stylesheets="@/style.css"
             prefWidth="1600"
             prefHeight="1000"
+            styleClass="screen-root"
             fx:controller="ru.utin.magicchess.controllers.SinglePlayerController">
-    <VBox>
-
-
-        <Label fx:id="moved"/>
-        <VBox fx:id="gameContent"/>
-    </VBox>
-</AnchorPane>
+    <top>
+        <VBox spacing="8" styleClass="panel-card">
+            <padding>
+                <Insets top="16" right="16" bottom="16" left="16"/>
+            </padding>
+            <Label text="Одиночная партия" styleClass="section-title"/>
+            <Label fx:id="moved" styleClass="status-text"/>
+        </VBox>
+    </top>
+    <center>
+        <VBox fx:id="gameContent" alignment="CENTER" styleClass="panel-card">
+            <padding>
+                <Insets top="16" right="16" bottom="16" left="16"/>
+            </padding>
+        </VBox>
+    </center>
+</BorderPane>

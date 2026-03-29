@@ -8,23 +8,15 @@ import java.util.EnumMap;
 import java.util.Map;
 
 public final class AudioService {
-    private static final AudioService instance = new AudioService();
-    private static final Map<SoundType, Media> sounds = new EnumMap<>(SoundType.class);
+    private final Map<SoundType, Media> sounds = new EnumMap<>(SoundType.class);
 
     private MediaPlayer sfxPlayer;
     private MediaPlayer bgmPlayer;
 
-    static {
+    public AudioService() {
         for (SoundType type : SoundType.values()) {
             sounds.put(type, new Media(ResourceUtil.resourceUrl(type.getPath())));
         }
-    }
-
-    private AudioService() {
-    }
-
-    public static AudioService getInstance() {
-        return instance;
     }
 
     public synchronized void playSfx(SoundType type) {
@@ -38,8 +30,7 @@ public final class AudioService {
         disposeBgm();
         bgmPlayer = new MediaPlayer(sounds.get(type));
         bgmPlayer.setVolume(type.getVolume());
-        bgmPlayer.setOnEndOfMedia(this::disposeBgm);
-        bgmPlayer.setOnStopped(this::disposeBgm);
+        bgmPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         bgmPlayer.setOnError(this::disposeBgm);
         bgmPlayer.play();
     }
@@ -61,11 +52,12 @@ public final class AudioService {
 
     private synchronized void disposeBgm() {
         if (bgmPlayer != null) {
+            MediaPlayer player = bgmPlayer;
+            bgmPlayer = null;
             try {
-                bgmPlayer.stop();
+                player.stop();
             } finally {
-                bgmPlayer.dispose();
-                bgmPlayer = null;
+                player.dispose();
             }
         }
     }

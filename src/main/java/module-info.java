@@ -1,8 +1,6 @@
 module ru.utin.magicchess {
     requires javafx.controls;
     requires javafx.fxml;
-    requires static lombok;
-    requires java.desktop;
     requires javafx.media;
 
 
