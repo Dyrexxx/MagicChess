@@ -5,7 +5,7 @@ import ru.utin.magicchess.game.factory.TypeFigureModel;
 import ru.utin.magicchess.models.figures.Figure;
 import ru.utin.magicchess.models.figures.chess.chessFigures.base.black.*;
 
-public class BlackFigureFactory extends AbstractFigureFactory{
+public class BlackFigureFactory extends AbstractFigureFactory {
 
     @Override
     public Figure create(TypeFigureModel type, TypeSide typeSide) {

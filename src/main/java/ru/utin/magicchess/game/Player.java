@@ -3,9 +3,6 @@ package ru.utin.magicchess.game;
 import lombok.Getter;
 import lombok.Setter;
 import ru.utin.magicchess.game.factory.TypeColorFigure;
-import ru.utin.magicchess.models.cells.parent.Cell;
-
-import java.util.ArrayList;
 
 @Getter
 @Setter

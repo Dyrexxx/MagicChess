@@ -2,14 +2,13 @@ package ru.utin.magicchess;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import ru.utin.magicchess.utils.ResourceUtil;
 
-import java.io.File;
-
-public class MusicClick{
+public class MusicClick {
     private static MusicClick instance;
     private MediaPlayer mediaPlayer;
-    private static final Media MEDIA_MOVE = new Media(new File("E:\\ideaProject\\MagicChess\\src\\main\\resources\\ru\\utin\\magicchess\\music\\soundMoveFigure.mp3").toURI().toString());
-    private static final Media MEDIA_ATTACK = new Media(new File("E:\\ideaProject\\MagicChess\\src\\main\\resources\\ru\\utin\\magicchess\\music\\odin-udar-boxing.mp3").toURI().toString());
+    private static final Media MEDIA_MOVE = new Media(ResourceUtil.resourceUrl("/ru/utin/magicchess/music/soundMoveFigure.mp3"));
+    private static final Media MEDIA_ATTACK = new Media(ResourceUtil.resourceUrl("/ru/utin/magicchess/music/odin-udar-boxing.mp3"));
 
     private MusicClick() {
     }
@@ -25,13 +24,18 @@ public class MusicClick{
             mediaPlayer = new MediaPlayer(MEDIA_MOVE);
         }
 
-        new Thread(() -> mediaPlayer.play()).start();
+        mediaPlayer.play();
     }
 
     private synchronized void dispose() {
-        mediaPlayer.stop();
-        mediaPlayer.dispose();
-        mediaPlayer = null;
+        if (mediaPlayer != null) {
+            try {
+                mediaPlayer.stop();
+            } finally {
+                mediaPlayer.dispose();
+                mediaPlayer = null;
+            }
+        }
 
     }
 

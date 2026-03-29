@@ -5,10 +5,6 @@ import javafx.scene.canvas.GraphicsContext;
 import lombok.Getter;
 import ru.utin.magicchess.models.cells.BaseChessCell;
 import ru.utin.magicchess.models.cells.parent.Cell;
-import ru.utin.magicchess.models.figures.chess.NoFigure;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static ru.utin.magicchess.models.cells.BaseChessCell.changeColor;
 

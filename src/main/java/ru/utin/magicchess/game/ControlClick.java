@@ -9,7 +9,6 @@ import ru.utin.magicchess.models.cells.ResultActiveFigureModel;
 import ru.utin.magicchess.models.cells.parent.Cell;
 import ru.utin.magicchess.models.figures.chess.ChessFigure;
 import ru.utin.magicchess.models.figures.chess.NoFigure;
-import ru.utin.magicchess.models.figures.chess.abstracts.King;
 import ru.utin.magicchess.models.figures.chess.abstracts.Pawn;
 
 import java.util.ArrayList;

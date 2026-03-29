@@ -7,7 +7,9 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
+import ru.utin.magicchess.App;
 import ru.utin.magicchess.ChessStage;
 import ru.utin.magicchess.game.SettingFieldGame;
 import ru.utin.magicchess.game.factory.TypeColorFigure;
@@ -44,8 +46,7 @@ public class SettingSingleplayController implements Initializable {
             if (!baseGameCheckBox.isSelected() && (
                     speciesOpponent.getValue() == TypeChessFigure.NONE || mySpecies.getValue() == TypeChessFigure.NONE)) {
                 throw new NullPointerException("Раса не выбрана");
-            }
-            else {
+            } else {
                 SettingFieldGame settingFieldGame = SettingFieldGame.getInstance();
                 settingFieldGame.setMyColorSide(sideBox.getValue());
                 settingFieldGame.setOpponentColorSide(sideBox.getValue() == TypeColorFigure.BLACK ? TypeColorFigure.WHITE : TypeColorFigure.BLACK);
@@ -72,7 +73,7 @@ public class SettingSingleplayController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        mySpeciesImage.setImage(new Image("E:\\ideaProject\\MagicChess\\src\\main\\resources\\ru\\utin\\magicchess\\images\\species\\elf.jpg"));
+        mySpeciesImage.setImage(new Image(App.class.getResource("/ru/utin/magicchess/images/species/elf.jpg").toExternalForm()));
         //
         sideBox.setValue(TypeColorFigure.WHITE);
         sideBox.getItems().add(TypeColorFigure.WHITE);

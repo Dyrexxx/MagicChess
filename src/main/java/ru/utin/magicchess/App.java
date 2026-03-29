@@ -7,6 +7,7 @@ import ru.utin.magicchess.utils.StageUtil;
 public class App extends Application {
     @Override
     public void start(Stage stage) {
+        ChessStage.init(stage);
         ChessStage chessStage = ChessStage.getInstance();
 
         chessStage.uploadScene(StageUtil.createScene("menu.fxml"));

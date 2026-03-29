@@ -5,11 +5,9 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import lombok.Getter;
 import lombok.Setter;
-import ru.utin.magicchess.game.Analyze;
 import ru.utin.magicchess.game.TypeSide;
 import ru.utin.magicchess.models.cells.ResultActiveFigureModel;
 import ru.utin.magicchess.models.cells.parent.Cell;
-import ru.utin.magicchess.models.figures.chess.abstracts.King;
 
 
 @Getter

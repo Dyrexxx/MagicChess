@@ -1,7 +1,6 @@
 package ru.utin.magicchess.game.factory.chess_figure.heroes.elf;
 
 import ru.utin.magicchess.game.factory.TypeColorFigure;
-import ru.utin.magicchess.game.factory.chess_figure.ColorFigureFactory;
 import ru.utin.magicchess.game.factory.chess_figure.heroes.SpeciesFigureFactory;
 import ru.utin.magicchess.game.factory.chess_figure.heroes.elf.factory.ElfBlackFactory;
 import ru.utin.magicchess.game.factory.chess_figure.heroes.elf.factory.ElfWhiteFactory;

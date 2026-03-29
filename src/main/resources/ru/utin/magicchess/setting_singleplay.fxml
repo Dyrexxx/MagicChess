@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
 <FlowPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
           fx:id="rootPane"
-          prefWidth="16000"
-          prefHeight="10000"
+          prefWidth="1600"
+          prefHeight="1000"
           fx:controller="ru.utin.magicchess.controllers.SettingSingleplayController">
     <children>
         <ImageView fx:id="mySpeciesImage" fitWidth="300" fitHeight="300"/>

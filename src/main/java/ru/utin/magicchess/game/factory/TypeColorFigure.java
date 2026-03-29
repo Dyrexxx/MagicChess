@@ -9,6 +9,7 @@ public enum TypeColorFigure {
     BLACK("Черный"),
     WHITE("Белый");
     private final String title;
+
     TypeColorFigure(String title) {
         this.title = title;
     }

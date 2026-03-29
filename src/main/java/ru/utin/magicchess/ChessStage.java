@@ -1,21 +1,17 @@
 package ru.utin.magicchess;
 
 import javafx.scene.Scene;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.stage.Window;
-import lombok.Getter;
 
 
 public class ChessStage {
     private static ChessStage instance;
     private final Stage stage;
 
-    private ChessStage() {
-        stage = new Stage();
+    private ChessStage(Stage primaryStage) {
+        stage = primaryStage;
         stage.setTitle("Magic Chess");
         stage.setMaximized(true);
-        stage.setFullScreen(true);
         stage.show();
     }
 
@@ -28,10 +24,20 @@ public class ChessStage {
         if (instance == null) {
             synchronized (ChessStage.class) {
                 if (instance == null) {
-                    instance = new ChessStage();
+                    throw new IllegalStateException("ChessStage not initialized. Call ChessStage.init(Stage) first.");
                 }
             }
         }
         return instance;
+    }
+
+    public static void init(Stage stage) {
+        if (instance == null) {
+            synchronized (ChessStage.class) {
+                if (instance == null) {
+                    instance = new ChessStage(stage);
+                }
+            }
+        }
     }
 }

@@ -1,19 +1,21 @@
 package ru.utin.magicchess.game;
 
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
-import lombok.Getter;
 import ru.utin.magicchess.models.cells.ResultActiveFigureModel;
 import ru.utin.magicchess.models.cells.parent.Cell;
 import ru.utin.magicchess.models.figures.chess.NoFigure;
 import ru.utin.magicchess.models.figures.chess.abstracts.King;
+import ru.utin.magicchess.utils.ResourceUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class Analyze {
     private static final Analyze instance = new Analyze();
     private King kingShah = null;
-    private static final Image shahImage = new Image("E:\\ideaProject\\MagicChess\\src\\main\\resources\\ru\\utin\\magicchess\\images\\chess\\shah.png");
+    private static final Image shahImage = new Image(ResourceUtil.resourceUrl("/ru/utin/magicchess/images/chess/shah.png"));
 
     private Analyze() {
     }
@@ -88,7 +90,7 @@ public class Analyze {
                 }
             }
         }
-        if(attackList.isEmpty() && moveList.isEmpty()) {
+        if (attackList.isEmpty() && moveList.isEmpty()) {
             System.out.println("MATTTTT");
         }
     }

@@ -2,10 +2,10 @@ package ru.utin.magicchess.game.factory.chess_figure;
 
 import ru.utin.magicchess.game.TypeSide;
 import ru.utin.magicchess.game.factory.TypeColorFigure;
+import ru.utin.magicchess.game.factory.TypeFigure;
 import ru.utin.magicchess.game.factory.TypeFigureModel;
 import ru.utin.magicchess.game.factory.chess_figure.base.BaseFigureFactory;
 import ru.utin.magicchess.game.factory.chess_figure.heroes.HeroesFigureFactory;
-import ru.utin.magicchess.game.factory.TypeFigure;
 import ru.utin.magicchess.models.figures.Figure;
 import ru.utin.magicchess.models.figures.chess.TypeChessFigure;
 

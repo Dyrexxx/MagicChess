@@ -12,7 +12,7 @@ public class Queen extends ChessFigure {
     }
 
     @Override
-   protected ResultActiveFigureModel activated(int i, int j, Cell[][] field) {
+    protected ResultActiveFigureModel activated(int i, int j, Cell[][] field) {
         RunType leftUp = RunType.NONE;
         RunType leftDown = RunType.NONE;
         RunType rightUp = RunType.NONE;

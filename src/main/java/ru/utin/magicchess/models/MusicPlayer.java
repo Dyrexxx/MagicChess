@@ -3,15 +3,13 @@ package ru.utin.magicchess.models;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-
 import lombok.Getter;
-
-import java.io.File;
+import ru.utin.magicchess.utils.ResourceUtil;
 
 @Getter
 public class MusicPlayer {
     private MediaPlayer mediaPlayer;
-    private static final Media music = new Media(new File("E:\\ideaProject\\MagicChess\\src\\main\\resources\\ru\\utin\\magicchess\\music\\menu2.mp3").toURI().toString());
+    private static final Media music = new Media(ResourceUtil.resourceUrl("/ru/utin/magicchess/music/menu2.mp3"));
 
     public synchronized void play() {
 
@@ -22,13 +20,17 @@ public class MusicPlayer {
         mediaPlayer.setOnStopped(this::dispose);
         mediaPlayer.setOnRepeat(this::dispose);
 
-        new Thread(() -> {
-            mediaPlayer.play();
-        }).start();
+        mediaPlayer.play();
     }
 
     private synchronized void dispose() {
-        mediaPlayer.stop();
-        mediaPlayer.dispose();
+        if (mediaPlayer != null) {
+            try {
+                mediaPlayer.stop();
+            } finally {
+                mediaPlayer.dispose();
+                mediaPlayer = null;
+            }
+        }
     }
 }

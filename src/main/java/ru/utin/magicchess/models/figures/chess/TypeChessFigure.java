@@ -1,8 +1,5 @@
 package ru.utin.magicchess.models.figures.chess;
 
-import javafx.util.StringConverter;
-import lombok.ToString;
-
 public enum TypeChessFigure {
     WHITE("Белые"),
     BLACK("Черные"),

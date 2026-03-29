@@ -1,19 +1,13 @@
 package ru.utin.magicchess.models.cells.parent;
 
 import javafx.scene.canvas.Canvas;
-
 import javafx.scene.canvas.GraphicsContext;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import ru.utin.magicchess.game.Analyze;
-import ru.utin.magicchess.game.BaseGameField;
-import ru.utin.magicchess.models.cells.BaseChessCell;
 import ru.utin.magicchess.models.cells.ResultActiveFigureModel;
 import ru.utin.magicchess.models.figures.Figure;
-
-import java.util.List;
-import java.util.Objects;
 
 @ToString
 @Getter
