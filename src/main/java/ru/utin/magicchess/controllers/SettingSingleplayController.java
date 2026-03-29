@@ -9,55 +9,51 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
-import ru.utin.magicchess.App;
 import ru.utin.magicchess.ChessStage;
 import ru.utin.magicchess.game.SettingFieldGame;
 import ru.utin.magicchess.game.factory.TypeColorFigure;
-import ru.utin.magicchess.game.factory.TypeFigure;
 import ru.utin.magicchess.models.figures.chess.TypeChessFigure;
+import ru.utin.magicchess.utils.ResourceUtil;
 import ru.utin.magicchess.utils.StageUtil;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class SettingSingleplayController implements Initializable {
-    @FXML
-    private FlowPane rootPane;
-    @FXML
-    private VBox speciesPane;
-    @FXML
-    private ChoiceBox<TypeColorFigure> sideBox;
-    @FXML
-    private CheckBox baseGameCheckBox;
-    @FXML
-    private ChoiceBox<TypeChessFigure> speciesOpponent;
-    @FXML
-    private ChoiceBox<TypeChessFigure> mySpecies;
-    @FXML
-    private ImageView mySpeciesImage;
-    @FXML
-    private ImageView opponentSpeciesImage;
-    @FXML
-    private Label error;
+    @FXML private FlowPane rootPane;
+    @FXML private VBox speciesPane;
+    @FXML private ChoiceBox<TypeColorFigure> sideBox;
+    @FXML private CheckBox baseGameCheckBox;
+    @FXML private ChoiceBox<TypeChessFigure> speciesOpponent;
+    @FXML private ChoiceBox<TypeChessFigure> mySpecies;
+    @FXML private ImageView mySpeciesImage;
+    @FXML private ImageView opponentSpeciesImage;
+    @FXML private Label error;
 
     @FXML
     private void onStart() {
-        try {
-            if (!baseGameCheckBox.isSelected() && (
-                    speciesOpponent.getValue() == TypeChessFigure.NONE || mySpecies.getValue() == TypeChessFigure.NONE)) {
-                throw new NullPointerException("Раса не выбрана");
-            } else {
-                SettingFieldGame settingFieldGame = SettingFieldGame.getInstance();
-                settingFieldGame.setMyColorSide(sideBox.getValue());
-                settingFieldGame.setOpponentColorSide(sideBox.getValue() == TypeColorFigure.BLACK ? TypeColorFigure.WHITE : TypeColorFigure.BLACK);
-                settingFieldGame.setTypeFigure(baseGameCheckBox.isSelected() ? TypeFigure.BASE : TypeFigure.SPECIES);
-                settingFieldGame.setSpeciesOpponent(speciesOpponent.getValue());
-                settingFieldGame.setMySpecies(mySpecies.getValue());
-                ChessStage.getInstance().uploadScene(StageUtil.createScene("single_player.fxml"));
-            }
-        } catch (NullPointerException e) {
-            error.setText(e.getMessage());
+        if (!baseGameCheckBox.isSelected() &&
+                (speciesOpponent.getValue() == TypeChessFigure.NONE || mySpecies.getValue() == TypeChessFigure.NONE)) {
+            error.setText("Раса не выбрана");
+            return;
         }
+
+        SettingFieldGame settings = SettingFieldGame.getInstance();
+        TypeColorFigure myColor = sideBox.getValue();
+        TypeColorFigure opponentColor = myColor == TypeColorFigure.BLACK ? TypeColorFigure.WHITE : TypeColorFigure.BLACK;
+
+        settings.setMyColorSide(myColor);
+        settings.setOpponentColorSide(opponentColor);
+
+        if (baseGameCheckBox.isSelected()) {
+            settings.setMySpecies(TypeChessFigure.CLASSIC);
+            settings.setOpponentSpecies(TypeChessFigure.CLASSIC);
+        } else {
+            settings.setMySpecies(mySpecies.getValue());
+            settings.setOpponentSpecies(speciesOpponent.getValue());
+        }
+
+        ChessStage.getInstance().uploadScene(StageUtil.createScene("single_player.fxml"));
     }
 
     @FXML
@@ -73,17 +69,15 @@ public class SettingSingleplayController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        mySpeciesImage.setImage(new Image(App.class.getResource("/ru/utin/magicchess/images/species/elf.jpg").toExternalForm()));
-        //
-        sideBox.setValue(TypeColorFigure.WHITE);
-        sideBox.getItems().add(TypeColorFigure.WHITE);
-        sideBox.getItems().add(TypeColorFigure.BLACK);
-        //
-        speciesOpponent.setValue(TypeChessFigure.NONE);
-        speciesOpponent.getItems().add(TypeChessFigure.ELF);
-//
-        mySpecies.setValue(TypeChessFigure.NONE);
-        mySpecies.getItems().add(TypeChessFigure.ELF);
+        mySpeciesImage.setImage(new Image(ResourceUtil.resourceUrl("/ru/utin/magicchess/images/species/elf.jpg")));
 
+        sideBox.getItems().addAll(TypeColorFigure.WHITE, TypeColorFigure.BLACK);
+        sideBox.setValue(TypeColorFigure.WHITE);
+
+        speciesOpponent.getItems().add(TypeChessFigure.ELF);
+        speciesOpponent.setValue(TypeChessFigure.NONE);
+
+        mySpecies.getItems().add(TypeChessFigure.ELF);
+        mySpecies.setValue(TypeChessFigure.NONE);
     }
 }

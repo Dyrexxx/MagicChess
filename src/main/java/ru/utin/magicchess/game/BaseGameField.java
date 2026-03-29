@@ -2,27 +2,21 @@ package ru.utin.magicchess.game;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import lombok.Getter;
 import ru.utin.magicchess.models.cells.BaseChessCell;
 import ru.utin.magicchess.models.cells.parent.Cell;
 
-import static ru.utin.magicchess.models.cells.BaseChessCell.changeColor;
-
-
 public class BaseGameField implements SubjectField {
-    private static final SettingFieldGame settingFieldGame;
     @Getter
     private final Cell[][] field;
     private final TurnMove turnMove;
 
-    static {
-        settingFieldGame = SettingFieldGame.getInstance();
-    }
-
     public BaseGameField(Canvas canvas) {
+        SettingFieldGame settings = SettingFieldGame.getInstance();
         field = createChessField((int) canvas.getWidth());
-        settingFieldGame.fillGameField(field);
-        turnMove = new TurnMove(settingFieldGame.getMyColorSide(), settingFieldGame.getOpponentColorSide());
+        BoardInitializer.fillField(field, settings);
+        turnMove = new TurnMove(settings.getMyColorSide(), settings.getOpponentColorSide());
         paint(canvas);
     }
 
@@ -41,18 +35,19 @@ public class BaseGameField implements SubjectField {
         }
     }
 
-    private Cell[][] createChessField(int widthCanvas) {
-        Cell[][] chessField = new BaseChessCell[8][8];
-        int cellSize = widthCanvas / 8;
+    private Cell[][] createChessField(int canvasWidth) {
+        Cell[][] chessField = new Cell[8][8];
+        int cellSize = canvasWidth / 8;
+        boolean dark = true;
         for (int i = 0, x = 0; i < 8; i++, x += cellSize) {
-            changeColor();
+            dark = !dark;
             for (int j = 0, y = 0; j < 8; j++, y += cellSize) {
-                chessField[i][j] = new BaseChessCell(x, y, cellSize);
+                Color cellColor = dark ? Color.BLACK : Color.WHITE;
+                chessField[i][j] = new BaseChessCell(x, y, cellSize, cellColor);
                 chessField[i][j].setCoordinatesInList(i, j);
-                changeColor();
+                dark = !dark;
             }
         }
         return chessField;
     }
-
 }

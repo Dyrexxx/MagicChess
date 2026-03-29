@@ -18,8 +18,8 @@ public class SinglePlayerController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Analyze.getInstance();
         Game game = new Game();
-        Analyze.getInstance(); //init
         gameContent.getChildren().add(game.getCanvas());
     }
 }

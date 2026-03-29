@@ -18,17 +18,6 @@ public class ResultActiveFigureModel {
         moveList = new ArrayList<>();
     }
 
-    public static ResultActiveFigureModel cloneModel(ResultActiveFigureModel original) {
-        ResultActiveFigureModel copy = new ResultActiveFigureModel();
-        for (Cell cell : original.getAttackList()) {
-            copy.getAttackList().add(cell);
-        }
-        for (Cell cell : original.getMoveList()) {
-            copy.getMoveList().add(cell);
-        }
-        return copy;
-    }
-
     public void clear() {
         moveList.clear();
         attackList.clear();

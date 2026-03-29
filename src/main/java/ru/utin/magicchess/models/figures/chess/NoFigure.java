@@ -7,19 +7,17 @@ import ru.utin.magicchess.models.figures.Figure;
 
 public class NoFigure extends Figure {
 
-
     public NoFigure() {
         super(null);
     }
 
-
     @Override
     protected ResultActiveFigureModel activated(int i, int j, Cell[][] field) {
-        return null;
+        return new ResultActiveFigureModel();
     }
 
     @Override
     protected void drawImage(GraphicsContext gc, int x, int y, int size) {
-
+        // Пустая клетка — рисовать нечего
     }
 }

@@ -1,18 +1,17 @@
 package ru.utin.magicchess.models.cells;
 
-
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import ru.utin.magicchess.models.cells.parent.Cell;
 import ru.utin.magicchess.models.figures.chess.NoFigure;
 
 public class BaseChessCell extends Cell {
-    private static Color color = Color.BLACK;
-    private final Color cellColor = color;
+    private final Color cellColor;
 
-    public BaseChessCell(int x, int y, int size) {
+    public BaseChessCell(int x, int y, int size, Color cellColor) {
         super(x, y, size);
-        figure = new NoFigure();
+        this.cellColor = cellColor;
+        this.figure = new NoFigure();
     }
 
     @Override
@@ -21,9 +20,4 @@ public class BaseChessCell extends Cell {
         gc.fillRect(x, y, size, size);
         figure.draw(gc, x, y, size);
     }
-
-    public static void changeColor() {
-        color = color == Color.BLACK ? Color.WHITE : Color.BLACK;
-    }
-
 }

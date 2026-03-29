@@ -31,20 +31,16 @@ public abstract class Figure implements Cloneable {
         drawImage(gc, x, y, size);
     }
 
-
     public ResultActiveFigureModel activateFigure(int i, int j, Cell[][] field) {
         return activated(i, j, field);
     }
 
-
     @Override
     public Figure clone() {
         try {
-            Figure clone = (Figure) super.clone();
-            // TODO: copy mutable state here, so the clone can't change the internals of the original
-            return clone;
+            return (Figure) super.clone();
         } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
+            throw new AssertionError(e);
         }
     }
 }

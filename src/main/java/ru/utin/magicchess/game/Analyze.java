@@ -14,129 +14,114 @@ import java.util.Set;
 
 public class Analyze {
     private static final Analyze instance = new Analyze();
-    private King kingShah = null;
-    private static final Image shahImage = new Image(ResourceUtil.resourceUrl("/ru/utin/magicchess/images/chess/shah.png"));
+    private static final Image SHAH_IMAGE = new Image(ResourceUtil.resourceUrl("/ru/utin/magicchess/images/chess/shah.png"));
 
     private Analyze() {
     }
 
     public static Analyze getInstance() {
-        synchronized (instance) {
-            return instance;
-        }
+        return instance;
     }
 
-    private List<Cell> analyzeHodIfShah(Cell[][] field, List<Cell> activatedModel, Cell currentCell) {
-        List<Cell> newMoveList = new ArrayList<>();
-
-        for (int i = 0; i < activatedModel.size(); i++) {
-            Cell[][] fieldCopy = Analyze.copyField(field);
-            Cell move = activatedModel.get(i);
-            fieldCopy[move.getI()][move.getJ()].setFigure(currentCell.getFigure());
-            fieldCopy[currentCell.getI()][currentCell.getJ()].setFigure(new NoFigure());
-
-            if (!analyzeShah(fieldCopy, currentCell.getFigure().getTypeSide())) {
-                newMoveList.add(move);
-            }
-        }
-        return newMoveList;
+    /**
+     * Фильтрует допустимые ходы/атаки с учётом шаха:
+     * убирает из модели те ходы, после которых свой король окажется под шахом.
+     */
+    public void analyzeMoveIfShah(Cell[][] field, ResultActiveFigureModel model, Cell currentCell) {
+        TypeSide typeSide = currentCell.getFigure().getTypeSide();
+        List<Cell> validMoves = filterForCheck(field, model.getMoveList(), currentCell, typeSide);
+        List<Cell> validAttacks = filterForCheck(field, model.getAttackList(), currentCell, typeSide);
+        model.clear();
+        model.getMoveList().addAll(validMoves);
+        model.getAttackList().addAll(validAttacks);
     }
 
-    public void analyzeMoveIfShah(Cell[][] field, ResultActiveFigureModel activatedModel, Cell currentCell) {
-        List<Cell> newAttackList = analyzeHodIfShah(field, activatedModel.getAttackList(), currentCell);
-        List<Cell> newMoveList = analyzeHodIfShah(field, activatedModel.getMoveList(), currentCell);
-        activatedModel.clear();
-        activatedModel.getMoveList().addAll(newMoveList);
-        activatedModel.getAttackList().addAll(newAttackList);
-    }
-
-    private boolean analyzeShah(Cell[][] field, TypeSide typeSide) {
-        List<Cell> attackOpponentList = analyzeAttack(field);
-        boolean localIsShah = false;
-        for (Cell attack : attackOpponentList) {
-            if (attack.getFigure() instanceof King king) {
-                if (king.getTypeSide() != typeSide) {
-                    return false;
-                }
-                localIsShah = true;
-                kingShah = king;
-            }
-        }
-        if (!localIsShah && kingShah != null) {
-            kingShah.setShahImage(null);
-            kingShah = null;
-        }
-        return localIsShah;
-    }
-
-    private static Cell[][] copyField(Cell[][] field) {
-        Cell[][] fieldCopyForMove = new Cell[field.length][field[0].length];
-        for (int i = 0; i < fieldCopyForMove.length; i++) {
-            for (int j = 0; j < fieldCopyForMove[0].length; j++) {
-                fieldCopyForMove[i][j] = (Cell) field[i][j].clone();
-            }
-        }
-        return fieldCopyForMove;
-    }
-
-    public void findMate(Cell[][] field, TypeSide typeSide) {
-        Set<Cell> attackList = new HashSet<>();
-        Set<Cell> moveList = new HashSet<>();
-        for (int i = 0; i < field.length; i++) {
-            for (int j = 0; j < field[0].length; j++) {
-                if (!(field[i][j].getFigure() instanceof NoFigure) && field[i][j].getFigure().getTypeSide() == typeSide) {
-                    attackList.addAll(field[i][j].activateFigure(field[i][j].getI(), field[i][j].getJ(), field).getAttackList());
-                    moveList.addAll(field[i][j].activateFigure(field[i][j].getI(), field[i][j].getJ(), field).getMoveList());
-                }
-            }
-        }
-        if (attackList.isEmpty() && moveList.isEmpty()) {
-            System.out.println("MATTTTT");
-        }
-    }
-
+    /**
+     * Обновляет иконку шаха у каждого короля на доске.
+     */
     public void findShah(Cell[][] field) {
-        Set<Cell> attackList = new HashSet<>();
-        for (int i = 0; i < field.length; i++) {
-            for (int j = 0; j < field[0].length; j++) {
-                if (!(field[i][j].getFigure() instanceof NoFigure)) {
-                    attackList.addAll(field[i][j].activateFigure(field[i][j].getI(), field[i][j].getJ(), field).getAttackList());
+        Set<Cell> attacked = collectAttacks(field);
+        for (Cell[] row : field) {
+            for (Cell cell : row) {
+                if (cell.getFigure() instanceof King king) {
+                    king.setShahImage(attacked.contains(cell) ? SHAH_IMAGE : null);
                 }
             }
         }
-        boolean isShah = false;
-        for (Cell cell : attackList) {
-            if (cell.getFigure() instanceof King king) {
-                king.setShahImage(shahImage);
-                isShah = true;
-                kingShah = king;
-            }
-        }
-        if (!isShah && kingShah != null) {
-            kingShah = null;
-        }
     }
 
-
-    private List<Cell> analyzeAttack(Cell[][] field) {
-        List<Cell> attackedCells = new ArrayList<>(16);
+    /**
+     * Проверяет, есть ли у стороны typeSide хотя бы один допустимый ход.
+     * Если нет — мат или пат.
+     *
+     * @return true если нет ни одного хода (мат/пат)
+     */
+    public boolean findMate(Cell[][] field, TypeSide typeSide) {
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field[i].length; j++) {
                 Cell cell = field[i][j];
-                if (!(cell.getFigure() instanceof NoFigure)) {
-                    ResultActiveFigureModel copyActiveModel = cell.getFigure().activateFigure(i, j, field);
-                    addAllUnicalElement(copyActiveModel.getAttackList(), attackedCells);
+                if (!(cell.getFigure() instanceof NoFigure) && cell.getFigure().getTypeSide() == typeSide) {
+                    ResultActiveFigureModel model = cell.activateFigure(i, j, field);
+                    if (!model.getMoveList().isEmpty() || !model.getAttackList().isEmpty()) {
+                        return false;
+                    }
                 }
             }
         }
-        return attackedCells;
+        return true;
     }
 
-    private static void addAllUnicalElement(List<Cell> cells, List<Cell> unicalElements) {
-        for (Cell cell : cells) {
-            if (!unicalElements.contains(cell)) {
-                unicalElements.add(cell);
+    private List<Cell> filterForCheck(Cell[][] field, List<Cell> candidates, Cell currentCell, TypeSide typeSide) {
+        List<Cell> valid = new ArrayList<>();
+        for (Cell candidate : candidates) {
+            Cell[][] copy = copyField(field);
+            copy[candidate.getI()][candidate.getJ()].setFigure(currentCell.getFigure());
+            copy[currentCell.getI()][currentCell.getJ()].setFigure(new NoFigure());
+            if (!isKingInCheck(copy, typeSide)) {
+                valid.add(candidate);
             }
         }
+        return valid;
+    }
+
+    private boolean isKingInCheck(Cell[][] field, TypeSide typeSide) {
+        Set<Cell> attacked = collectAttacks(field);
+        for (Cell[] row : field) {
+            for (Cell cell : row) {
+                if (cell.getFigure() instanceof King king && king.getTypeSide() == typeSide) {
+                    return attacked.contains(cell);
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Собирает все клетки, находящиеся под атакой хотя бы одной фигуры.
+     * Вызывает activateFigure напрямую на фигуре (не на клетке), чтобы избежать рекурсии.
+     */
+    private Set<Cell> collectAttacks(Cell[][] field) {
+        Set<Cell> attacked = new HashSet<>();
+        for (int i = 0; i < field.length; i++) {
+            for (int j = 0; j < field[i].length; j++) {
+                if (!(field[i][j].getFigure() instanceof NoFigure)) {
+                    attacked.addAll(
+                            field[i][j].getFigure().activateFigure(i, j, field).getAttackList()
+                    );
+                }
+            }
+        }
+        return attacked;
+    }
+
+    private static Cell[][] copyField(Cell[][] field) {
+        Cell[][] copy = new Cell[field.length][field[0].length];
+        for (int i = 0; i < copy.length; i++) {
+            for (int j = 0; j < copy[0].length; j++) {
+                copy[i][j] = (Cell) field[i][j].clone();
+            }
+        }
+
+        return copy;
     }
 }

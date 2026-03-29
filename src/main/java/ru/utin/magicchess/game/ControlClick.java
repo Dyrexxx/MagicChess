@@ -1,10 +1,11 @@
 package ru.utin.magicchess.game;
 
 import javafx.scene.paint.Color;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import ru.utin.magicchess.MusicClick;
-import ru.utin.magicchess.TypeRunFigure;
+import ru.utin.magicchess.audio.AudioService;
+import ru.utin.magicchess.audio.SoundType;
 import ru.utin.magicchess.models.cells.ResultActiveFigureModel;
 import ru.utin.magicchess.models.cells.parent.Cell;
 import ru.utin.magicchess.models.figures.chess.ChessFigure;
@@ -23,8 +24,13 @@ public class ControlClick implements ObserverField, AnalyzableGameField {
     private Cell lastCell = null;
     private Cell currentCell = null;
 
-    public ControlClick(SubjectField baseGameField) {
-        baseGameField.registerObserver(this);
+    @Getter(AccessLevel.NONE)
+    private final List<Cell> moveList = new ArrayList<>();
+    @Getter(AccessLevel.NONE)
+    private final List<Cell> attackList = new ArrayList<>();
+
+    public ControlClick(SubjectField subject) {
+        subject.registerObserver(this);
     }
 
     @Override
@@ -43,52 +49,40 @@ public class ControlClick implements ObserverField, AnalyzableGameField {
         if (block) {
             currentCell = cell;
             if (lastCell == currentCell) {
-                reset();
+                cancelSelection();
             } else if (currentCell.getFigure() instanceof NoFigure) {
-                if (move()) {
-                    MusicClick.getInstance().play(TypeRunFigure.MOVE);
-                    turnMove.move();
-                    reset();
+                if (tryMove()) {
+                    AudioService.getInstance().playSfx(SoundType.MOVE);
+                    afterMove();
                 }
             } else if (currentCell.getFigure() instanceof ChessFigure) {
-                if (attack()) {
-                    MusicClick.getInstance().play(TypeRunFigure.ATTACK);
-                    turnMove.move();
-                    reset();
+                if (tryAttack()) {
+                    AudioService.getInstance().playSfx(SoundType.ATTACK);
+                    afterMove();
                 }
             }
-
         } else {
-            if (!(cell.getFigure() instanceof NoFigure) && ((ChessFigure) cell.getFigure()).getType() == turnMove.getTurnColor()) {
+            if (!(cell.getFigure() instanceof NoFigure)
+                    && ((ChessFigure) cell.getFigure()).getColor() == turnMove.getTurnColor()) {
                 block = true;
                 lastCell = cell;
-                ResultActiveFigureModel activeFigureList = activatedFigure(i, j);
-                ActiveFigures.ATTACK.fillList(activeFigureList);
+                highlightFigure(i, j);
             }
-
         }
     }
 
-
-    private ResultActiveFigureModel activatedFigure(int i, int j) {
-        ResultActiveFigureModel activatedModel = lastCell.activateFigure(i, j, field);
+    private void highlightFigure(int i, int j) {
+        ResultActiveFigureModel model = lastCell.activateFigure(i, j, field);
         field[i][j].getFigure().setActiveColor(Color.GREEN);
-        for (Cell cell : activatedModel.getMoveList()) {
-            cell.getFigure().setActiveColor(Color.YELLOW);
-        }
-        for (Cell cell : activatedModel.getAttackList()) {
-            cell.getFigure().setActiveColor(Color.RED);
-        }
-        return activatedModel;
+        model.getMoveList().forEach(c -> c.getFigure().setActiveColor(Color.YELLOW));
+        model.getAttackList().forEach(c -> c.getFigure().setActiveColor(Color.RED));
+        moveList.addAll(model.getMoveList());
+        attackList.addAll(model.getAttackList());
     }
 
-    public boolean attack() {
-        if (ActiveFigures.ATTACK.getCellList().contains(currentCell)) {
-            if (lastCell.getFigure() instanceof Pawn pawn) {
-                if (!pawn.isBeMove()) {
-                    pawn.setBeMove(true);
-                }
-            }
+    private boolean tryAttack() {
+        if (attackList.contains(currentCell)) {
+            markPawnMoved();
             currentCell.setFigure(lastCell.getFigure());
             lastCell.setFigure(new NoFigure());
             return true;
@@ -96,63 +90,50 @@ public class ControlClick implements ObserverField, AnalyzableGameField {
         return false;
     }
 
-    public boolean move() {
-        if (ActiveFigures.MOVE.getCellList().contains(currentCell)) {
-            if (lastCell.getFigure() instanceof Pawn pawn) {
-                if (!pawn.isBeMove()) {
-                    pawn.setBeMove(true);
-                }
-            }
+    private boolean tryMove() {
+        if (moveList.contains(currentCell)) {
+            markPawnMoved();
             currentCell.setFigure(lastCell.getFigure());
             lastCell.setFigure(new NoFigure());
             return true;
         }
         return false;
-
     }
 
-    private void reset() {
-        ActiveFigures.clearList(lastCell);
-        Analyze.getInstance().findShah(field);
-        Analyze.getInstance().findMate(field, currentCell.getFigure().getTypeSide());
+    private void markPawnMoved() {
+        if (lastCell.getFigure() instanceof Pawn pawn && !pawn.isMoved()) {
+            pawn.setMoved(true);
+        }
+    }
+
+    private void cancelSelection() {
+        clearHighlights();
         block = false;
         lastCell = null;
         currentCell = null;
     }
 
-
-    @Getter
-    private enum ActiveFigures {
-        ATTACK(new ArrayList<>()), MOVE(new ArrayList<>());
-
-        private final List<Cell> activeFigureList;
-
-        ActiveFigures(List<Cell> activeFigureList) {
-            this.activeFigureList = activeFigureList;
+    private void afterMove() {
+        TypeSide moverSide = currentCell.getFigure().getTypeSide();
+        TypeSide opponentSide = moverSide == TypeSide.UP ? TypeSide.DOWN : TypeSide.UP;
+        turnMove.move();
+        clearHighlights();
+        Analyze.getInstance().findShah(field);
+        if (Analyze.getInstance().findMate(field, opponentSide)) {
+            // TODO: показать экран завершения партии
         }
+        block = false;
+        lastCell = null;
+        currentCell = null;
+    }
 
-        public List<Cell> getCellList() {
-            return activeFigureList;
-        }
-
-        private void clear() {
-            activeFigureList.clear();
-        }
-
-        public void fillList(ResultActiveFigureModel activeFigureModel) {
-            ATTACK.getCellList().addAll(activeFigureModel.getAttackList());
-            MOVE.getCellList().addAll(activeFigureModel.getMoveList());
-        }
-
-        public static void clearList(Cell lastCell) {
+    private void clearHighlights() {
+        if (lastCell != null) {
             lastCell.getFigure().setActiveColor(Color.TRANSPARENT);
-            for (ActiveFigures activeFigures : ActiveFigures.values()) {
-                for (Cell cell : activeFigures.getCellList()) {
-                    cell.getFigure().setActiveColor(Color.TRANSPARENT);
-                }
-            }
-            ATTACK.clear();
-            MOVE.clear();
         }
+        moveList.forEach(c -> c.getFigure().setActiveColor(Color.TRANSPARENT));
+        attackList.forEach(c -> c.getFigure().setActiveColor(Color.TRANSPARENT));
+        moveList.clear();
+        attackList.clear();
     }
 }

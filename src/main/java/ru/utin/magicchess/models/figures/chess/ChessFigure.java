@@ -12,35 +12,30 @@ import static ru.utin.magicchess.utils.GameUtil.indexIsArray;
 
 @Getter
 public abstract class ChessFigure extends Figure {
-    protected TypeColorFigure type;
-    private final ResultActiveFigureModel activatedModel;
+    private final TypeColorFigure color;
 
-
-    public ChessFigure(TypeSide typeSide) {
+    public ChessFigure(TypeSide typeSide, TypeColorFigure color) {
         super(typeSide);
-        activatedModel = new ResultActiveFigureModel();
+        this.color = color;
     }
 
-    protected ResultActiveFigureModel sendActivatedModel() {
-        ResultActiveFigureModel newActivatedModel = ResultActiveFigureModel.cloneModel(activatedModel);
-        activatedModel.clear();
-        return newActivatedModel;
-    }
-
-    protected RunType run(int i, int j, Cell[][] field) {
+    /**
+     * Пытается добавить ход/атаку для клетки (i, j) в переданную модель.
+     * Возвращает тип результата: атака, ход или стоп.
+     */
+    protected RunType run(int i, int j, Cell[][] field, ResultActiveFigureModel model) {
         if (indexIsArray(i, j)) {
             Cell cell = field[i][j];
             Figure figure = cell.getFigure();
-            if (figure instanceof ChessFigure) {
-                if (((ChessFigure) cell.getFigure()).type != type) {
-                    activatedModel.getAttackList().add(cell);
+            if (figure instanceof ChessFigure chessFigure) {
+                if (chessFigure.color != color) {
+                    model.getAttackList().add(cell);
                     return RunType.ATTACK;
                 } else {
                     return RunType.STOP;
                 }
-
             } else if (figure instanceof NoFigure) {
-                activatedModel.getMoveList().add(cell);
+                model.getMoveList().add(cell);
                 return RunType.MOVE;
             }
         }
@@ -51,5 +46,4 @@ public abstract class ChessFigure extends Figure {
     protected void drawImage(GraphicsContext gc, int x, int y, int size) {
         gc.drawImage(image, x, y, size, size);
     }
-
 }

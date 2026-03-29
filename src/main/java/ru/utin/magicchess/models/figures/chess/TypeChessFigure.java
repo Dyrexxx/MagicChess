@@ -1,8 +1,7 @@
 package ru.utin.magicchess.models.figures.chess;
 
 public enum TypeChessFigure {
-    WHITE("Белые"),
-    BLACK("Черные"),
+    CLASSIC("Классические"),
     ELF("Эльфы"),
     NONE("Не указано");
 
